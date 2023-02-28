@@ -1,0 +1,68 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    ext {
+        kotlin_version = "1.7.20"
+        agp_version = "7.4.1"
+    }
+
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:$agp_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    // Define Build properties
+    ext {
+        mimiMavenUser = getBuildProperty("mimiMavenUser", "PORTAL_USERNAME")
+        mimiMavenPassword = getBuildProperty("mimiMavenPassword", "PORTAL_PASSWORD")
+    }
+
+    repositories {
+        google()
+        mavenCentral()
+
+        // Mimi artifacts repository
+        maven {
+            url "https://api.integrate.mimi.io/files/sdk/android"
+            credentials {
+                username = "${mimiMavenUser}"
+                password = "${mimiMavenPassword}"
+            }
+            authentication {
+                basic(BasicAuthentication)
+            }
+        }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+ext {
+    mimiClientID = getBuildProperty("mimiClientID", "CLIENT_ID")
+    mimiClientSecret = getBuildProperty("mimiClientSecret", "CLIENT_SECRET")
+    msdkVer = "7.4.0"
+}
+
+//region Get ENV vars
+def getBuildProperty(String localProperty, String environmentVariable, String orDefault = "undefined") {
+    return getLocalProperty(localProperty) ?: System.getenv(environmentVariable) ?: orDefault
+}
+
+def getLocalProperty(String key) {
+    Properties localProperties = new Properties()
+    if (file("local.properties").exists()) {
+        localProperties.load(file("local.properties").newDataInputStream())
+    }
+    return localProperties[key]
+}
+//endregion
