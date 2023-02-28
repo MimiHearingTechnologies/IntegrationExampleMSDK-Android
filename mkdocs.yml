@@ -1,0 +1,50 @@
+# Project information
+site_name: 'Android Integration Sample'
+site_description: 'Android Integration Sample'
+site_author: '2022 Mimi Hearing Technologies GmbH'
+site_url: ''
+remote_branch: gh-pages
+edit_uri: ""
+
+# Copyright
+copyright: 'Copyright &copy; 2022 Mimi Hearing Technologies GmbH'
+
+# Configuration
+theme:
+  name: 'material'
+  language: 'en'
+  favicon: 'img/favicon.ico'
+  logo: 'img/logo.png'
+  palette:
+    primary: 'deep purple'
+    accent: 'white'
+  font:
+    text: 'Roboto'
+    code: 'Roboto Mono'
+
+# Navigation
+nav:
+  - 'Overview': index.md
+  - 'Integrating Mimi SDK': integration.md
+  - 'Processing': processing.md
+  - 'Advanced Processing': advanced-processing.md
+  - 'Profile': profile.md
+  - 'MSDK Docs': https://mimihearingtechnologies.github.io/SDK-Android/latest/
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - footnotes
+  - toc:
+      permalink: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+
+# Plugins
+plugins:
+  - search
+
+# Built with https://github.com/squidfunk/mkdocs-material
