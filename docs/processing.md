@@ -36,8 +36,10 @@ override fun onCreate(savedInstanceState: Bundle?) {
      * This is an example to show it being called in onCreate(). but can
      * be called later in lifecycle as per business use-case requirement
      */
-    lifecycleScope.launchWhenCreated {
-        activateProcessingSession()
+    lifecycleScope.launch {
+        repeatOnLifecycle(Lifecycle.State.CREATED) {
+            activateProcessingSession()
+        }
     }
 }
 
