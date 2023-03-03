@@ -18,13 +18,16 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import io.mimi.example.android.applicators.IntensityApplicator
 import io.mimi.example.android.applicators.IsEnabledApplicator
 import io.mimi.example.android.applicators.PresetApplicator
 import io.mimi.sdk.core.MimiCore
 import io.mimi.sdk.core.controller.processing.*
 import io.mimi.sdk.core.model.personalization.Personalization
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -44,8 +47,10 @@ class MainActivity : AppCompatActivity() {
          * which have been held at a different lifecycle scope, then they
          * become invalid.
          */
-        lifecycleScope.launchWhenCreated {
-            activateProcessingSession()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
+                activateProcessingSession()
+            }
         }
     }
 
