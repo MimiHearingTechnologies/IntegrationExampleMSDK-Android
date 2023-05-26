@@ -122,7 +122,7 @@ ext {
     mimiClientID = getBuildProperty("mimiClientID", "CLIENT_ID")
     mimiClientSecret = getBuildProperty("mimiClientSecret", "CLIENT_SECRET")
     // Define MSDK version here
-    msdkVer = "7.4.0"
+    msdkVer = "7.5.1"
 }
 ```
 
