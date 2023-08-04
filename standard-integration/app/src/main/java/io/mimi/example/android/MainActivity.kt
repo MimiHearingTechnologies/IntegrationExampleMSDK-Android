@@ -119,11 +119,17 @@ class MainActivity : AppCompatActivity() {
         val targetSdkVersion = applicationInfo.targetSdkVersion
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S && targetSdkVersion < Build.VERSION_CODES.S) {
             if (checkLocationServices()) {
-                // Initialize your Bluetooth Handler here
+                initializeBluetoothHandler()
             }
         } else {
-            // Initialize your Bluetooth Handler here
+            initializeBluetoothHandler()
         }
+    }
+
+    private fun initializeBluetoothHandler() {
+        // Initialize your Bluetooth Handler here
+        // This would include setting/unsetting the HeadphoneIdentifierStore.instance.headphoneModelId
+        // when the headphones are connected/disconnected
     }
 
     private fun checkLocationServices(): Boolean {
@@ -273,7 +279,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun getTechLevelFromFirmware(): Fitting {
         // Usually requested via Bluetooth connection
-        // This is hardcoded as an example
+        // This is hardcoded as an example!
         return Fitting(techLevel = 4)
     }
 
