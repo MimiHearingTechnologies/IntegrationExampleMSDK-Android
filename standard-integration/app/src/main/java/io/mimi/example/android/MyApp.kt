@@ -4,6 +4,8 @@ import android.app.Application
 import android.content.Context
 import io.mimi.sdk.core.MimiConfiguration
 import io.mimi.sdk.core.MimiCore
+import io.mimi.sdk.core.model.headphones.MimiConnectedHeadphoneProvider
+import io.mimi.sdk.core.model.headphones.MimiHeadphoneIdentifier
 
 class MyApp : Application() {
 
@@ -12,22 +14,28 @@ class MyApp : Application() {
         initializeMimiCore(this)
     }
 
-    private fun enableMimiSDKLogs() {
-        io.mimi.sdk.core.util.Log::class.java.getDeclaredField("enabled")
-                .apply {
-                    isAccessible = true
-                    setBoolean(io.mimi.sdk.core.util.Log(), true)
-                }
-    }
-
     private fun initializeMimiCore(context: Context) {
-        // Uncomment to enable debug logs for MSDK
-        // enableMimiSDKLogs()
+        enableMimiSDKLogs()
         MimiCore.start(
                 context = context,
                 configuration = MimiConfiguration(),
                 clientId = BuildConfig.MY_CLIENT_ID,
                 clientSecret = BuildConfig.MY_CLIENT_SECRET
         )
+        // This is an optional step which is only applicable if you are using the Mimi SDK to
+        // provide PTT hearing test functionality for known headphone models.
+        setUpHeadphoneIdentifierProvider()
+    }
+
+    private fun setUpHeadphoneIdentifierProvider() {
+        MimiCore.testsController.connectedHeadphoneProvider = MimiConnectedHeadphoneProvider {
+            HeadphoneIdentifierStore.instance.headphoneModelId?.let { id ->
+                MimiHeadphoneIdentifier(id)
+            }
+        }
+    }
+
+    private fun enableMimiSDKLogs() {
+        io.mimi.sdk.core.util.Log.isEnabled = BuildConfig.DEBUG
     }
 }
