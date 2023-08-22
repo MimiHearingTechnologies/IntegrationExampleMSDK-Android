@@ -37,28 +37,12 @@ When using  `FragmentContainer` or `fragment`,
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center" />
-
-<!-- Or using fragment -->
-<fragment
-        android:id="@+id/mimiProfileFragment"
-        android:name="io.mimi.sdk.profile.MimiProfileFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center" />
 ```
 
 `MimiProfileLauncher`:
 
 ```xml
 <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/mimiProfileLauncher"
-        android:name="io.mimi.sdk.profile.MimiProfileLauncher"
-        android:layout_width="320dp"
-        android:layout_height="200dp"
-        android:layout_gravity="center" />
-
-<!-- Or using fragment -->
-<fragment
         android:id="@+id/mimiProfileLauncher"
         android:name="io.mimi.sdk.profile.MimiProfileLauncher"
         android:layout_width="320dp"

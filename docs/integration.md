@@ -150,7 +150,7 @@ dependencies {
     // Other dependencies here
 
     // For lifecycleScope
-    def lifecycle_version = "2.5.1"
+    def lifecycle_version = "2.6.1"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 
@@ -188,15 +188,10 @@ class MyApp : Application() {
 ```
 
 !!! note
-    The MSDK doesn’t have full API support for logging control yet, but there’s still a way to enable logging using Reflection, this isn’t supported as a API, so we recommend only use it when debugging and removing afterwards. Make sure you don't run it in production/proguarded code.
-    First setup the function:
+    First setup the function to only log while in debug mode:
     ```kotlin
     private fun enableMimiSDKLogs() {
-        io.mimi.sdk.core.util.Log::class.java.getDeclaredField("enabled")
-                .apply {
-                    isAccessible = true
-                    setBoolean(io.mimi.sdk.core.util.Log(), true)
-                }
+        io.mimi.sdk.core.util.Log.isEnabled = BuildConfig.DEBUG
     }
     ```
     Next, call this function just before initializing the MSDK (MimiCore.start() )
