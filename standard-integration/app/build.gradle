@@ -8,10 +8,6 @@ android {
 
     namespace "io.mimi.example.android"
 
-    buildFeatures {
-        buildConfig = true
-    }
-
     defaultConfig {
         applicationId "io.mimi.example.integrationexamplemsdk_android"
         minSdk 21
@@ -34,6 +30,7 @@ android {
     }
 
     buildFeatures {
+        buildConfig = true
         viewBinding true
     }
 }
