@@ -6,6 +6,12 @@ plugins {
 android {
     compileSdk 34
 
+    namespace "io.mimi.example.android"
+
+    buildFeatures {
+        buildConfig = true
+    }
+
     defaultConfig {
         applicationId "io.mimi.example.integrationexamplemsdk_android"
         minSdk 21
