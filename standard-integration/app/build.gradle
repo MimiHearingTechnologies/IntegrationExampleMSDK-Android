@@ -22,15 +22,27 @@ android {
         buildConfigField("String", "MY_CLIENT_SECRET", rootProject.ext.mimiClientSecret)
     }
 
+    signingConfigs {
+        dummy {
+            storeFile file("${rootProject.projectDir}/keystore/dummy.keystore")
+            storePassword getBuildProperty("dummyKeystoreStorePassword", "DUMMY_KEYSTORE_STORE_PASSWORD")
+            keyAlias getBuildProperty("dummyKeystoreKeyAlias", "DUMMY_KEYSTORE_KEY_ALIAS")
+            keyPassword getBuildProperty("dummyKeystoreKeyPassword", "DUMMY_KEYSTORE_KEY_PASSWORD")
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.dummy
         }
     }
 
     buildFeatures {
-        buildConfig = true
+        buildConfig true
         viewBinding true
     }
 }
