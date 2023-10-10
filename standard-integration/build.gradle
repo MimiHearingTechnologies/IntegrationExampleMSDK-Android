@@ -50,7 +50,7 @@ task clean(type: Delete) {
 ext {
     mimiClientID = getBuildProperty("mimiClientID", "CLIENT_ID")
     mimiClientSecret = getBuildProperty("mimiClientSecret", "CLIENT_SECRET")
-    msdkVer = "8.1.1"
+    msdkVer = "8.2.0"
 }
 
 //region Get ENV vars
