@@ -43,14 +43,14 @@ allprojects {
     }
 }
 
-task clean(type: Delete) {
+tasks.register('clean', Delete) {
     delete rootProject.buildDir
 }
 
 ext {
     mimiClientID = getBuildProperty("mimiClientID", "CLIENT_ID")
     mimiClientSecret = getBuildProperty("mimiClientSecret", "CLIENT_SECRET")
-    msdkVer = "9.0.0"
+    msdkVer = "9.0.1"
 }
 
 //region Get ENV vars
