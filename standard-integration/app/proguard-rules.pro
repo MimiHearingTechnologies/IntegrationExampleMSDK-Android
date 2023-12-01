@@ -20,27 +20,8 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
-############### Mimi SDK specific rules ################
--keep class io.mimi.sdk.core.model.** { *; }
--keep class io.mimi.sdk.core.api.** { *; }
--keep class io.mimi.hte.HTENativeWrapper { *; }
--keep public enum io.mimi.hte.** { *; }
--keep class * extends io.mimi.sdk.ux.flow.view.Section { <init>(*); } # Keeping all classes extending Section class due to reflection issues with Proguard/R8
-
-################ Kotlin specific rules ################
+################# Kotlin specific rules ################
 -keep class kotlin.Metadata { *; }
-
-################ Updated Retrofit rules for R8 full mode ################
-# See - https://github.com/square/retrofit/issues/3751
-
-# Keep generic signature of Call, Response (R8 full mode strips signatures from non-kept items).
- -keep,allowobfuscation,allowshrinking interface retrofit2.Call
- -keep,allowobfuscation,allowshrinking class retrofit2.Response
-
- # With R8 full mode generic signatures are stripped for classes that are not
- # kept. Suspend functions are wrapped in continuations where the type argument
- # is used.
- -keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
 
 # Silence missing classes errors: would be fixed with OkHttp 4.11.0.
 # See https://github.com/square/okhttp/issues/6258
