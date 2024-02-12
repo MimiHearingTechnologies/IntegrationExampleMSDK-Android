@@ -50,7 +50,7 @@ tasks.register('clean', Delete) {
 ext {
     mimiClientID = getBuildProperty("mimiClientID", "CLIENT_ID")
     mimiClientSecret = getBuildProperty("mimiClientSecret", "CLIENT_SECRET")
-    msdkVer = "9.1.0"
+    msdkVer = "10.0.0"
 }
 
 //region Get ENV vars
