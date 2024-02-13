@@ -33,7 +33,6 @@ import io.mimi.sdk.core.controller.processing.config.dsl.fineTuning
 import io.mimi.sdk.core.controller.processing.config.dsl.mimiProcessingConfiguration
 import io.mimi.sdk.core.controller.processing.config.dsl.personalization
 import io.mimi.sdk.core.internal.MsdkExperimentalApi
-import io.mimi.sdk.core.model.personalization.Personalization
 import kotlinx.coroutines.launch
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
@@ -264,6 +263,8 @@ class MainActivity : AppCompatActivity() {
     private val presetApplicator = PresetApplicator(applicator)
     private var presetApplicatorRef: MimiParameterApplicator? = null
 
+    // You should define a timeout which best suits your integration
+    // This example is 10 seconds and we've chosen it to be the same for all parameters.
     private val APPLY_TIMEOUT: Duration = 10.toDuration(DurationUnit.SECONDS)
 
     /*
@@ -275,12 +276,34 @@ class MainActivity : AppCompatActivity() {
         MimiCore.processingController.activateSession(config)
 
         // Wire up the applicators to the activeSession
-        isEnabledApplicatorRef = addIsEnabledApplicator(activeSession.isEnabled)
-        intensityApplicatorRef = addIntensityApplicator(activeSession.intensity)
-        presetApplicatorRef = addPresetApplicator(activeSession.preset)
+        // In this example we don't want to handle the result of the synchronization
+        // Any failure will reported in the Mimi Profile UI.
+        with(activeSession) {
+            val (newIsEnabledApplicatorRef, _) =
+                isEnabled.addApplicatorAndSynchronize(
+                    APPLY_TIMEOUT,
+                    isEnabledApplicator::apply
+                )
+            val (newIntensityApplicatorRef, _) =
+                intensity.addApplicatorAndSynchronize(
+                    APPLY_TIMEOUT,
+                    intensityApplicator::apply
+                )
+            val (newPresetApplicatorRef, _) =
+                activeSession.preset.addApplicatorAndSynchronize(
+                    APPLY_TIMEOUT,
+                    presetApplicator::apply
+                )
+            // Assign so we can dispose later.
+            with(this@MainActivity) {
+                isEnabledApplicatorRef = newIsEnabledApplicatorRef
+                intensityApplicatorRef = newIntensityApplicatorRef
+                presetApplicatorRef = newPresetApplicatorRef
+            }
+        }
     }
 
-    private fun defineMimiProcessingConfiguration() : MimiProcessingConfiguration {
+    private fun defineMimiProcessingConfiguration(): MimiProcessingConfiguration {
         return MimiProcessingConfiguration(
             personalization = PersonalizationConfiguration(
                 mode = PersonalizationModeConfiguration.FineTuning(fitting = getTechLevelFromFirmware())
@@ -288,9 +311,9 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    // An alternative syntax - still experimental!
+    // An alternative syntax - still experimental, so opt-in is required!
     @OptIn(MsdkExperimentalApi::class)
-    private fun defineMimiProcessingConfigurationUsingDsl() : MimiProcessingConfiguration {
+    private fun defineMimiProcessingConfigurationUsingDsl(): MimiProcessingConfiguration {
         return mimiProcessingConfiguration {
             personalization {
                 fineTuning {
@@ -308,60 +331,30 @@ class MainActivity : AppCompatActivity() {
         presetApplicatorRef?.remove()
     }
 
-
     private fun getTechLevelFromFirmware(): Fitting {
         // Usually requested via Bluetooth connection
-        // This is hardcoded as an example!
+        // TODO - This is hardcoded as an example!
         return Fitting(techLevel = 4)
     }
 
-    // To force set a value on a Parameter
-    // Usage: setIsEnabledParam(true)
-    fun setIsEnabledParam(flag: Boolean) {
-        isEnabledApplicator.apply(flag)
-    }
+    /**
+     * This is a helper function to add an Applicator to a Processing Parameter
+     * and then synchronize the newly added Applicator with the Processing Parameter's current value.
+     */
+    private suspend fun <T> MimiProcessingParameter<T>.addApplicatorAndSynchronize(
+        applyTimeout: Duration,
+        applyFn: (T) -> MimiApplicatorResult
+    ): Pair<MimiParameterApplicator, ProcessingParameterResult> {
+        // Add the Applicator to the Processing Parameter,
+        // delegating the calls to your custom applicator logic.
+        val newApplicator = addApplicator(applyTimeout, applyFn)
 
-    // To force getting a value from a Parameter,
-    // Usage: val isEnabledValue = getIsEnabledParam()
-    private fun getIsEnabledParam() = activeSession.isEnabled.value
+        // Causes the Processing Parameter to push its current value
+        // to the newly added Applicator.
+        // This may fail, so we may want to handle the result.
+        val result = synchronizeApplicators()
 
-    private suspend fun addIsEnabledApplicator(
-        isEnabledParam: MimiProcessingParameter<Boolean>,
-    ): MimiParameterApplicator {
-        // Add the Applicator to the param, delegating the calls to your
-        // custom applicator logic
-        val applicator = isEnabledParam.addApplicator(
-            APPLY_TIMEOUT,
-            isEnabledApplicator::apply,
-        )
-
-        // Causes the isEnabled ProcessingParameter to push its current
-        // value to the newly added Applicator
-        isEnabledParam.synchronizeApplicators()
-
-        return applicator
-    }
-
-    private suspend fun addIntensityApplicator(
-        intensityParam: MimiProcessingParameter<Double>,
-    ): MimiParameterApplicator {
-        val applicator = intensityParam.addApplicator(
-            APPLY_TIMEOUT,
-            intensityApplicator::apply,
-        )
-        intensityParam.synchronizeApplicators()
-        return applicator
-    }
-
-    private suspend fun addPresetApplicator(
-        presetParam: MimiProcessingParameter<Personalization.PersonalizationPreset?>
-    ): MimiParameterApplicator {
-        val applicator = presetParam.addApplicator(
-            APPLY_TIMEOUT,
-            presetApplicator::apply,
-        )
-        presetParam.synchronizeApplicators()
-        return applicator
+        return newApplicator to result
     }
     //endregion
 }
