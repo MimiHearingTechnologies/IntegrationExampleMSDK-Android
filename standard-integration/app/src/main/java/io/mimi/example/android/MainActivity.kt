@@ -26,8 +26,17 @@ import io.mimi.example.android.applicators.IsEnabledApplicator
 import io.mimi.example.android.applicators.PresetApplicator
 import io.mimi.sdk.core.MimiCore
 import io.mimi.sdk.core.controller.processing.*
-import io.mimi.sdk.core.model.personalization.Personalization
+import io.mimi.sdk.core.controller.processing.config.MimiProcessingConfiguration
+import io.mimi.sdk.core.controller.processing.config.PersonalizationConfiguration
+import io.mimi.sdk.core.controller.processing.config.PersonalizationModeConfiguration
+import io.mimi.sdk.core.controller.processing.config.dsl.fineTuning
+import io.mimi.sdk.core.controller.processing.config.dsl.mimiProcessingConfiguration
+import io.mimi.sdk.core.controller.processing.config.dsl.personalization
+import io.mimi.sdk.core.internal.MsdkExperimentalApi
 import kotlinx.coroutines.launch
+import kotlin.time.Duration
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 class MainActivity : AppCompatActivity() {
 
@@ -61,25 +70,25 @@ class MainActivity : AppCompatActivity() {
 
     private fun registerLocationServiceStateReceiver() {
         registerReceiver(
-                locationServiceStateReceiver,
-                IntentFilter(LocationManager.MODE_CHANGED_ACTION)
+            locationServiceStateReceiver,
+            IntentFilter(LocationManager.MODE_CHANGED_ACTION)
         )
     }
 
     private val enableBluetoothRequest =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                if (it.resultCode == RESULT_OK) {
-                    // Bluetooth has been enabled
-                    checkPermissions()
-                } else {
-                    // Bluetooth has not been enabled, try again
-                    askToEnableBluetooth()
-                }
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                // Bluetooth has been enabled
+                checkPermissions()
+            } else {
+                // Bluetooth has not been enabled, try again
+                askToEnableBluetooth()
             }
+        }
 
     private val bluetoothManager by lazy {
         applicationContext
-                .getSystemService(BLUETOOTH_SERVICE)
+            .getSystemService(BLUETOOTH_SERVICE)
                 as BluetoothManager
     }
 
@@ -106,7 +115,10 @@ class MainActivity : AppCompatActivity() {
     private fun getMissingPermissions(requiredPermissions: Array<String>): Array<String> {
         val missingPermissions: MutableList<String> = ArrayList()
         for (requiredPermission in requiredPermissions) {
-            val permissionIsGranted = ContextCompat.checkSelfPermission(this, requiredPermission) != PackageManager.PERMISSION_GRANTED
+            val permissionIsGranted = ContextCompat.checkSelfPermission(
+                this,
+                requiredPermission
+            ) != PackageManager.PERMISSION_GRANTED
             if (permissionIsGranted) {
                 missingPermissions.add(requiredPermission)
             }
@@ -135,19 +147,19 @@ class MainActivity : AppCompatActivity() {
     private fun checkLocationServices(): Boolean {
         return if (!areLocationServicesEnabled()) {
             AlertDialog.Builder(this@MainActivity)
-                    .setTitle("Location services are not enabled")
-                    .setMessage("Scanning for Bluetooth peripherals requires locations services to be enabled.") // Want to enable?
-                    .setPositiveButton("Enable") { dialogInterface, _ ->
-                        dialogInterface.cancel()
-                        startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
-                    }
-                    .setNegativeButton("Cancel") { dialog, _ ->
-                        // if this button is clicked, just close
-                        // the dialog box and do nothing
-                        dialog.cancel()
-                    }
-                    .create()
-                    .show()
+                .setTitle("Location services are not enabled")
+                .setMessage("Scanning for Bluetooth peripherals requires locations services to be enabled.") // Want to enable?
+                .setPositiveButton("Enable") { dialogInterface, _ ->
+                    dialogInterface.cancel()
+                    startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+                }
+                .setNegativeButton("Cancel") { dialog, _ ->
+                    // if this button is clicked, just close
+                    // the dialog box and do nothing
+                    dialog.cancel()
+                }
+                .create()
+                .show()
             false
         } else {
             true
@@ -155,9 +167,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<String>,
-            grantResults: IntArray
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
@@ -173,27 +185,27 @@ class MainActivity : AppCompatActivity() {
             permissionsGranted()
         } else {
             AlertDialog.Builder(this@MainActivity)
-                    .setTitle("Location permission is required for scanning Bluetooth peripherals")
-                    .setMessage("Please grant permissions")
-                    .setPositiveButton("Retry") { dialogInterface, _ ->
-                        dialogInterface.cancel()
-                        checkPermissions()
-                    }
-                    .create()
-                    .show()
+                .setTitle("Location permission is required for scanning Bluetooth peripherals")
+                .setMessage("Please grant permissions")
+                .setPositiveButton("Retry") { dialogInterface, _ ->
+                    dialogInterface.cancel()
+                    checkPermissions()
+                }
+                .create()
+                .show()
         }
     }
 
 
     private fun areLocationServicesEnabled(): Boolean {
         val locationManager =
-                applicationContext.getSystemService(LOCATION_SERVICE) as LocationManager
+            applicationContext.getSystemService(LOCATION_SERVICE) as LocationManager
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             locationManager.isLocationEnabled
         } else {
             val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
             val isNetworkEnabled =
-                    locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
             isGpsEnabled || isNetworkEnabled
         }
     }
@@ -251,21 +263,64 @@ class MainActivity : AppCompatActivity() {
     private val presetApplicator = PresetApplicator(applicator)
     private var presetApplicatorRef: MimiParameterApplicator? = null
 
-    private val APPLY_TIMEOUT: Long = 10_000L
+    // You should define a timeout which best suits your integration
+    // This example is 10 seconds and we've chosen it to be the same for all parameters.
+    private val APPLY_TIMEOUT: Duration = 10.toDuration(DurationUnit.SECONDS)
 
     /*
      This will do a deactivation, then activation on a configuration change.
      */
     private suspend fun activateProcessingSession() {
-        val processingController = MimiCore.processingController
-        val upDownDataSourceConfig = MimiPresetParameterDataSourceConfiguration.UpDown(fitting = getTechLevelFromFirmware())
-        val upDownPresetDataSource = MimiCore.personalizationController.createPresetParameterDataSource(upDownDataSourceConfig)
-        processingController.activateSession(upDownPresetDataSource)
+
+        val config = defineMimiProcessingConfiguration()
+        MimiCore.processingController.activateSession(config)
 
         // Wire up the applicators to the activeSession
-        isEnabledApplicatorRef = addIsEnabledApplicator(activeSession.isEnabled)
-        intensityApplicatorRef = addIntensityApplicator(activeSession.intensity)
-        presetApplicatorRef = addPresetApplicator(activeSession.preset)
+        // In this example we don't want to handle the result of the synchronization
+        // Any failure will reported in the Mimi Profile UI.
+        with(activeSession) {
+            val (newIsEnabledApplicatorRef, _) =
+                isEnabled.addApplicatorAndSynchronize(
+                    APPLY_TIMEOUT,
+                    isEnabledApplicator::apply
+                )
+            val (newIntensityApplicatorRef, _) =
+                intensity.addApplicatorAndSynchronize(
+                    APPLY_TIMEOUT,
+                    intensityApplicator::apply
+                )
+            val (newPresetApplicatorRef, _) =
+                activeSession.preset.addApplicatorAndSynchronize(
+                    APPLY_TIMEOUT,
+                    presetApplicator::apply
+                )
+            // Assign so we can dispose later.
+            with(this@MainActivity) {
+                isEnabledApplicatorRef = newIsEnabledApplicatorRef
+                intensityApplicatorRef = newIntensityApplicatorRef
+                presetApplicatorRef = newPresetApplicatorRef
+            }
+        }
+    }
+
+    private fun defineMimiProcessingConfiguration(): MimiProcessingConfiguration {
+        return MimiProcessingConfiguration(
+            personalization = PersonalizationConfiguration(
+                mode = PersonalizationModeConfiguration.FineTuning(fitting = getTechLevelFromFirmware())
+            )
+        )
+    }
+
+    // An alternative syntax - still experimental, so opt-in is required!
+    @OptIn(MsdkExperimentalApi::class)
+    private fun defineMimiProcessingConfigurationUsingDsl(): MimiProcessingConfiguration {
+        return mimiProcessingConfiguration {
+            personalization {
+                fineTuning {
+                    fitting = getTechLevelFromFirmware()
+                }
+            }
+        }
     }
 
     // Removes the Applicator from its ProcessingParameter so it won't receive
@@ -276,63 +331,30 @@ class MainActivity : AppCompatActivity() {
         presetApplicatorRef?.remove()
     }
 
-
     private fun getTechLevelFromFirmware(): Fitting {
         // Usually requested via Bluetooth connection
-        // This is hardcoded as an example!
+        // TODO - This is hardcoded as an example!
         return Fitting(techLevel = 4)
     }
 
-    // To force set a value on a Parameter
-    // Usage: setIsEnabledParam(true)
-    fun setIsEnabledParam(flag: Boolean) {
-        isEnabledApplicator.apply(flag)
-    }
+    /**
+     * This is a helper function to add an Applicator to a Processing Parameter
+     * and then synchronize the newly added Applicator with the Processing Parameter's current value.
+     */
+    private suspend fun <T> MimiProcessingParameter<T>.addApplicatorAndSynchronize(
+        applyTimeout: Duration,
+        applyFn: (T) -> MimiApplicatorResult
+    ): Pair<MimiParameterApplicator, ProcessingParameterResult> {
+        // Add the Applicator to the Processing Parameter,
+        // delegating the calls to your custom applicator logic.
+        val newApplicator = addApplicator(applyTimeout, applyFn)
 
-    // To force getting a value from a Parameter,
-    // Usage: val isEnabledValue = getIsEnabledParam()
-    private fun getIsEnabledParam() = activeSession.isEnabled.value
+        // Causes the Processing Parameter to push its current value
+        // to the newly added Applicator.
+        // This may fail, so we may want to handle the result.
+        val result = synchronizeApplicators()
 
-    private suspend fun addIsEnabledApplicator(
-            isEnabledParam: MimiProcessingParameter<Boolean>,
-    ): MimiParameterApplicator {
-        // Add the Applicator to the param, delegating the calls to your
-        // custom applicator logic
-        val applicator = isEnabledParam.addApplicator(
-                { isEnabledApplicator.canApply() },
-                isEnabledApplicator::apply,
-                APPLY_TIMEOUT
-        )
-
-        // Causes the isEnabled ProcessingParameter to push its current
-        // value to the newly added Applicator
-        isEnabledParam.synchronize()
-
-        return applicator
-    }
-
-    private suspend fun addIntensityApplicator(
-            intensityParam: MimiProcessingParameter<Double>,
-    ): MimiParameterApplicator {
-        val applicator = intensityParam.addApplicator(
-                { intensityApplicator.canApply(it) },
-                intensityApplicator::apply,
-                APPLY_TIMEOUT
-        )
-        intensityParam.synchronize()
-        return applicator
-    }
-
-    private suspend fun addPresetApplicator(
-            presetParam: MimiFetchedProcessingParameter<Personalization.PersonalizationPreset?>
-    ): MimiParameterApplicator {
-        val applicator = presetParam.addApplicator(
-                presetApplicator::canApply,
-                presetApplicator::apply,
-                APPLY_TIMEOUT
-        )
-        presetParam.synchronize()
-        return applicator
+        return newApplicator to result
     }
     //endregion
 }

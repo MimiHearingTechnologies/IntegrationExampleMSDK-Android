@@ -1,29 +1,38 @@
 package io.mimi.example.android
 
 import android.util.Log
+import io.mimi.sdk.core.controller.processing.MimiApplicatorResult
 import io.mimi.sdk.core.model.personalization.Personalization
 
 class MimiProcessingApplicator {
 
     private val TAG: String = this.javaClass.simpleName
 
-    fun setPreset(preset: Personalization.PersonalizationPreset?) {
-        if (preset == null) {
-            clearMimiCommand()
+    fun setPreset(preset: Personalization.PersonalizationPreset?) : MimiApplicatorResult {
+        return if (preset == null) {
+            sendClearMimiCommand()
         } else {
-            Log.d(TAG, "Send the values to the external device via bluetooth $preset")
+            sendSetMimiPresetCommand(preset)
         }
     }
 
-    fun setIntensity(intensity: Double) {
-        Log.d(TAG, "Send the values to the external device via bluetooth $intensity")
+    fun setIntensity(intensity: Double) : MimiApplicatorResult {
+        Log.d(TAG, "TODO() - Send the intensity value to the external device via Bluetooth: $intensity")
+        return MimiApplicatorResult.Success
     }
 
-    fun setEnabled(enabled: Boolean) {
-        Log.d(TAG, "Send the values to the external device via bluetooth $enabled")
+    fun setEnabled(enabled: Boolean) : MimiApplicatorResult {
+        Log.d(TAG, "TODO() - Send the Enable/Disable value to the external device via Bluetooth: $enabled")
+        return MimiApplicatorResult.Success
     }
 
-    private fun clearMimiCommand() {
-        Log.d(TAG, "Send Clear Command to external device via bluetooth")
+    private fun sendClearMimiCommand() : MimiApplicatorResult {
+        Log.d(TAG, "TODO() - Send Clear Command to external device via Bluetooth")
+        return MimiApplicatorResult.Success
+    }
+
+    private fun sendSetMimiPresetCommand(preset: Personalization.PersonalizationPreset?) : MimiApplicatorResult {
+        Log.d(TAG, "TODO() - Send the preset to the external device via Bluetooth $preset")
+        return MimiApplicatorResult.Success
     }
 }
