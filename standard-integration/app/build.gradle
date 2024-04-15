@@ -3,10 +3,6 @@ plugins {
     id 'kotlin-android'
 }
 
-kotlin {
-    jvmToolchain(8)
-}
-
 android {
     namespace "io.mimi.example.android"
 
@@ -46,6 +42,14 @@ android {
     buildFeatures {
         buildConfig true
         viewBinding true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
     }
 }
 
