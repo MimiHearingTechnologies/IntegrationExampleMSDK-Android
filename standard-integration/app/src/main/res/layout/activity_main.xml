@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <androidx.fragment.app.FragmentContainerView
@@ -11,5 +12,13 @@
         android:name="io.mimi.sdk.profile.MimiProfileLauncher"
         android:layout_width="320dp"
         android:layout_height="200dp" />
+
+    <Button
+        android:id="@+id/sendCustomAudiogramBtn"
+        android:layout_width="304dp"
+        android:layout_height="wrap_content"
+        style="@style/Widget.Mimi.Button"
+        android:layout_marginTop="8dp"
+        android:text="Send custom audiogram" />
 
 </LinearLayout>
