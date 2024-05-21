@@ -1,22 +1,5 @@
 # Integration
 
-## Gradle Wrapper
-
-Make sure you are using a minimum of Gradle version 7.5.1 in your project.
-
-Check **gradle/wrapper/gradle-wrapper.properties**
-
-```groovy
-distributionUrl=https\://services.gradle.org/distributions/gradle-7.5.1-all.zip
-```
-
-If the version is below **7.5.1**, then execute the below command in terminal to upgrade your gradle wrapper.
-> Note: You can replace `7.5.1` with the any other gradle version.
-
-```bash
-./gradlew wrapper --gradle-version=7.5.1 --distribution-type=all
-```
-
 ## Credentials
 
 Add credentials in project's **local.properties**
@@ -122,7 +105,7 @@ ext {
     mimiClientID = getBuildProperty("mimiClientID", "CLIENT_ID")
     mimiClientSecret = getBuildProperty("mimiClientSecret", "CLIENT_SECRET")
     // Define MSDK version here
-    msdkVer = "10.0.0"
+    msdkVer = "10.2.0"
 }
 ```
 
@@ -147,13 +130,8 @@ android {
 
 ```groovy
 dependencies {
-    // Other dependencies here
-
-    // For lifecycleScope
-    def lifecycle_version = "2.6.1"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-
+    // Include your other dependencies here...
+    
     // Mimi SDK
     implementation "io.mimi:sdk:$rootProject.ext.msdkVer"
 }

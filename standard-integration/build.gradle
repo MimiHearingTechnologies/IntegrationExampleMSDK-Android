@@ -1,8 +1,8 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        kotlin_version = "1.8.22"
-        agp_version = "8.1.0"
+        kotlin_version = "1.9.23"
+        agp_version = "8.4.0"
     }
 
     repositories {
@@ -50,7 +50,7 @@ tasks.register('clean', Delete) {
 ext {
     mimiClientID = getBuildProperty("mimiClientID", "CLIENT_ID")
     mimiClientSecret = getBuildProperty("mimiClientSecret", "CLIENT_SECRET")
-    msdkVer = "10.1.0"
+    msdkVer = "10.2.0"
 }
 
 //region Get ENV vars
