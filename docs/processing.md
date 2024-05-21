@@ -154,14 +154,13 @@ suspend fun addIsEnabledApplicator(
     // Add the Applicator to the param, delegating the calls to your
     // custom applicator logic
     val applicator = isEnabledParam.addApplicator(
-        { isEnabledApplicator.canApply() },
-        isEnabledApplicator::apply,
-        APPLY_TIMEOUT
+      APPLY_TIMEOUT,
+      isEnabledApplicator::apply,
     )
 
     // Causes the isEnabled ProcessingParameter to push its current
     // value to the newly added Applicator
-    isEnabledParam.synchronize()
+    isEnabledParam.synchronizeApplicators()
     return applicator
 }
 ```
