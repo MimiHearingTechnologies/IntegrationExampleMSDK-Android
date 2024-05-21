@@ -12,7 +12,7 @@ Integration Example app for Android is primarily meant for Mimi's partners to he
 To build the project you need the following pre-requisites:
 
 - Your Mimi Client Id and Secret to allow you to communicate with the Mimi API.
-- MimiSDK v8 artifacts.
+- MimiSDK artifacts.
 
 ## 📃 Documentation
 
