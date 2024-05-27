@@ -72,5 +72,10 @@ dependencies {
 
     // Mimi SDK
     implementation "io.mimi:sdk:$rootProject.ext.msdkVer"
+    constraints {
+        implementation('com.mixpanel.android:mixpanel-android:7.5.2') {
+            because 'fixes transitive dependency issue https://github.com/mixpanel/mixpanel-android/issues/800'
+        }
+    }
 
 }
