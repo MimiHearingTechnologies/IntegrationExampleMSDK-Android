@@ -13,7 +13,6 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -39,12 +38,7 @@ import io.mimi.sdk.core.controller.processing.config.dsl.fineTuning
 import io.mimi.sdk.core.controller.processing.config.dsl.mimiProcessingConfiguration
 import io.mimi.sdk.core.controller.processing.config.dsl.personalization
 import io.mimi.sdk.core.internal.MsdkExperimentalApi
-import io.mimi.sdk.core.model.MimiAuthRoute
-import io.mimi.sdk.core.model.tests.MimiTestAudiogram
-import io.mimi.sdk.core.model.tests.MimiTestAudiogram.DataPoint
-import io.mimi.sdk.core.model.tests.TestAudiogramMetadata
 import kotlinx.coroutines.launch
-import java.util.Date
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
@@ -313,42 +307,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        findViewById<Button>(R.id.sendCustomAudiogramBtn).setOnClickListener {
-            // Send the custom audiogram to the Mimi SDK
-            sendCustomAudioGram()
-        }
-    }
-
-    private fun sendCustomAudioGram() = lifecycleScope.launch {
-        // Check if there is a user logged in
-        if (MimiCore.userController.mimiUser.state.value == null) {
-            MimiCore.userController.authenticate(MimiAuthRoute.Anonymously)
-        }
-
-        // Submit the custom audiogram
-        MimiCore.testsController.submitAudiogram(
-            leftEar = MimiTestAudiogram(
-                listOf(
-                    DataPoint(frequency = 250, threshold = 17.8),
-                    DataPoint(frequency = 500, threshold = 18.8),
-                    DataPoint(frequency = 1000, threshold = 22.7),
-                    DataPoint(frequency = 2000, threshold = 27.6),
-                    DataPoint(frequency = 4000, threshold = 29.4),
-                    DataPoint(frequency = 8000, threshold = 16.0)
-                )
-            ),
-            rightEar = MimiTestAudiogram(
-                listOf(
-                    DataPoint(frequency = 250, threshold = 13.3),
-                    DataPoint(frequency = 500, threshold = 17.3),
-                    DataPoint(frequency = 1000, threshold = 21.9),
-                    DataPoint(frequency = 2000, threshold = 28.9),
-                    DataPoint(frequency = 4000, threshold = 28.8),
-                    DataPoint(frequency = 8000, threshold = 17.2)
-                )
-            ),
-            metadata = TestAudiogramMetadata(timestamp = Date(System.currentTimeMillis()))
-        )
     }
 
     private fun defineMimiProcessingConfiguration(): MimiProcessingConfiguration {
