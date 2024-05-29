@@ -1,6 +1,5 @@
 package io.mimi.example.android.applicators.processing
 
-import io.mimi.example.android.MimiProcessingApplicator
 import io.mimi.sdk.core.controller.processing.MimiApplicatorResult
 
 internal class IntensityApplicator(private val applicator: MimiProcessingApplicator) {

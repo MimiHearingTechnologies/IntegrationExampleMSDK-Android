@@ -6,11 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
+import io.mimi.example.android.applicators.volumeadjustment.MimiVolumeAdjustmentApplicator
 import io.mimi.sdk.core.MimiCore
+import io.mimi.sdk.core.controller.tests.HeadphoneApplicatorConfiguration
 import io.mimi.sdk.core.model.MimiAuthRoute
+import io.mimi.sdk.core.model.headphones.MimiHeadphoneIdentifier
 import io.mimi.sdk.core.model.tests.MimiTestAudiogram
 import io.mimi.sdk.core.model.tests.TestAudiogramMetadata
 import io.mimi.sdk.profile.MimiProfileFragment
@@ -28,20 +32,85 @@ class IntroFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(view) {
-            findViewById<Button>(R.id.launchButton).setOnClickListener {
-                requireActivity().supportFragmentManager.commit {
-                    setReorderingAllowed(true)
-                    add<MimiProfileFragment>(R.id.mimiContainerFragment)
-                    addToBackStack("main")
-                }
-            }
+            setupMimiProfileLauncherUi()
+            setupMimiConnectedHeadphoneUi()
+            setupSubmitAudiogramUi()
+        }
+    }
 
-            findViewById<Button>(R.id.submitAudiogram).setOnClickListener {
-                // Send the custom audiogram to the Mimi SDK
-                submitAudiogram()
+    private fun View.setupSubmitAudiogramUi() {
+        findViewById<Button>(R.id.submitAudiogram).setOnClickListener {
+            // Send the custom audiogram to the Mimi SDK
+            submitAudiogram()
+        }
+    }
+
+    private fun View.setupMimiProfileLauncherUi() {
+        findViewById<Button>(R.id.launchButton).setOnClickListener {
+            requireActivity().supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                add<MimiProfileFragment>(R.id.mimiContainerFragment)
+                addToBackStack("main")
             }
         }
     }
+    // region Mimi Connected Headphones
+
+    /*
+     * The [connectedHeadphoneSwitch] simulates the actions that your app should take when receiving
+     * changes in headphone connectivity.
+     *
+     * When headphones are connected or disconnected, your app should notify the MSDK.
+     *
+     * When the TestFlow is launched, it will read from [MimiCore.testsController.connectedMimiHeadphone]
+     * to determine:
+     *  - Which test types (paradigms) are available and,
+     *  - How to interact with the headphones to ensure a consistent volume during the hearing test.
+     *
+     * In this example, the headphone model identifier is hardcoded, however you app should ensure
+     * that it reflects the currently connected headphone model.
+     */
+    private fun View.setupMimiConnectedHeadphoneUi() {
+        val connectedHeadphoneSwitch = findViewById<SwitchCompat>(R.id.mimiHeadphoneConnected)
+        updateConnectedMimiHeadphoneButtons(connectedHeadphoneSwitch)
+        connectedHeadphoneSwitch.setOnClickListener {
+
+            val headphoneAreConnected = it.isSelected
+
+            if (headphoneAreConnected) {
+                val mimiHeadphoneIdentifier =
+                    MimiHeadphoneIdentifier(getConnectedHeadphoneModelIdentifier())
+                // Notify the MSDK of the newly connected headphones and supply the
+                // applicator configuration to facilitate the PTT automatic volume adjustment
+                // sequence.
+                MimiCore.testsController.notifyMimiHeadphoneConnected(
+                    mimiHeadphoneIdentifier,
+                    HeadphoneApplicatorConfiguration(
+                        MimiVolumeAdjustmentApplicator.instance::isAbsoluteVolumeSupported,
+                        MimiVolumeAdjustmentApplicator.instance::onSendHearingTestStartCommand,
+                        MimiVolumeAdjustmentApplicator.instance::onSendHearingTestEndCommand
+                    )
+                )
+            } else {
+                MimiCore.testsController.notifyMimiHeadphoneDisconnected()
+            }
+        }
+    }
+
+    /*
+     * This is a simulated function: your application should return the identifier associated
+     * with your currently connected headphone device.
+     */
+    private fun getConnectedHeadphoneModelIdentifier() = "mimi:showcase_headphone"
+
+    private fun updateConnectedMimiHeadphoneButtons(connectedHeadphoneSwitch: SwitchCompat) {
+        val hasConnectedMimiHeadphone = MimiCore.testsController.connectedMimiHeadphone != null
+        connectedHeadphoneSwitch.isSelected = !hasConnectedMimiHeadphone
+    }
+
+    // endregion
+
+    // region Audiogram
 
     private fun submitAudiogram() = lifecycleScope.launch {
         // Check if there is a user logged in
@@ -75,5 +144,5 @@ class IntroFragment : Fragment() {
         )
     }
 
-
+    // endregion
 }

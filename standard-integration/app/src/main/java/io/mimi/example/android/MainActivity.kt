@@ -23,6 +23,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import io.mimi.example.android.applicators.processing.IntensityApplicator
 import io.mimi.example.android.applicators.processing.IsEnabledApplicator
+import io.mimi.example.android.applicators.processing.MimiProcessingApplicator
 import io.mimi.example.android.applicators.processing.PresetApplicator
 import io.mimi.sdk.core.MimiCore
 import io.mimi.sdk.core.controller.processing.Fitting

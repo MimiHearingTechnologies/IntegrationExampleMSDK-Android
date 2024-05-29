@@ -1,4 +1,4 @@
-package io.mimi.example.android
+package io.mimi.example.android.applicators.processing
 
 import android.util.Log
 import io.mimi.sdk.core.controller.processing.MimiApplicatorResult
