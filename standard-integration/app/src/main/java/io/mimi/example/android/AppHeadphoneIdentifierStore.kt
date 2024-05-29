@@ -1,10 +1,10 @@
 package io.mimi.example.android
 
-class HeadphoneIdentifierStore {
+class AppHeadphoneIdentifierStore {
 
     companion object {
-        val instance : HeadphoneIdentifierStore by lazy {
-            HeadphoneIdentifierStore()
+        val instance : AppHeadphoneIdentifierStore by lazy {
+            AppHeadphoneIdentifierStore()
         }
     }
     // This value should be set/unset when the headphone is connected/disconnected

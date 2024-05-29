@@ -21,9 +21,9 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import io.mimi.example.android.applicators.IntensityApplicator
-import io.mimi.example.android.applicators.IsEnabledApplicator
-import io.mimi.example.android.applicators.PresetApplicator
+import io.mimi.example.android.applicators.processing.IntensityApplicator
+import io.mimi.example.android.applicators.processing.IsEnabledApplicator
+import io.mimi.example.android.applicators.processing.PresetApplicator
 import io.mimi.sdk.core.MimiCore
 import io.mimi.sdk.core.controller.processing.Fitting
 import io.mimi.sdk.core.controller.processing.MimiApplicatorResult

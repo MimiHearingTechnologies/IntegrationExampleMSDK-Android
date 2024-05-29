@@ -41,7 +41,7 @@ class MyApp : Application() {
 
     private fun setUpHeadphoneIdentifierProvider() {
         MimiCore.testsController.connectedHeadphoneProvider = MimiConnectedHeadphoneProvider {
-            HeadphoneIdentifierStore.instance.headphoneModelId?.let { id ->
+            AppHeadphoneIdentifierStore.instance.headphoneModelId?.let { id ->
                 MimiHeadphoneIdentifier(id)
             }
         }
