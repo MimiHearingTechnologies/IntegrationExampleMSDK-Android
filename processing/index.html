@@ -1,0 +1,865 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Android Integration Sample">
+      
+      
+        <meta name="author" content="2022 Mimi Hearing Technologies GmbH">
+      
+      
+      
+        <link rel="prev" href="../integration/">
+      
+      
+        <link rel="next" href="../advanced-processing/">
+      
+      
+      <link rel="icon" href="../img/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
+    
+    
+      
+        <title>Processing - Android Integration Sample</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6543a935.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="white">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#processing" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Android Integration Sample" class="md-header__button md-logo" aria-label="Android Integration Sample" data-md-component="logo">
+      
+  <img src="../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Android Integration Sample
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Processing
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Android Integration Sample" class="md-nav__button md-logo" aria-label="Android Integration Sample" data-md-component="logo">
+      
+  <img src="../img/logo.png" alt="logo">
+
+    </a>
+    Android Integration Sample
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../integration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Integrating Mimi SDK
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Processing
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Processing
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#component-info" class="md-nav__link">
+    <span class="md-ellipsis">
+      Component Info
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#initialization-and-activation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Initialization and Activation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#processingparameter-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      ProcessingParameter Operations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ProcessingParameter Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reading-the-processingparameter-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reading the ProcessingParameter state
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reading the ProcessingParameter state">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-for-accessing-isenabled-parameter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example for accessing isEnabled parameter
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setting-the-processingparameter-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting the ProcessingParameter state
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defining-your-own-applicator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Defining your own Applicator
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Defining your own Applicator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setup-mimiprocessingapplicator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setup MimiProcessingApplicator
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-for-creating-an-isenabled-parameter-applicator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example for creating an isEnabled parameter applicator
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wireup-applicator-in-mainactivitykt" class="md-nav__link">
+    <span class="md-ellipsis">
+      Wireup applicator in MainActivity.kt
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setting-a-value" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting a value
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Advanced Processing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../profile/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Profile
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://mimihearingtechnologies.github.io/SDK-Android/latest/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MSDK Docs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#component-info" class="md-nav__link">
+    <span class="md-ellipsis">
+      Component Info
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#initialization-and-activation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Initialization and Activation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#processingparameter-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      ProcessingParameter Operations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ProcessingParameter Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reading-the-processingparameter-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reading the ProcessingParameter state
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reading the ProcessingParameter state">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-for-accessing-isenabled-parameter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example for accessing isEnabled parameter
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setting-the-processingparameter-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting the ProcessingParameter state
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defining-your-own-applicator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Defining your own Applicator
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Defining your own Applicator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setup-mimiprocessingapplicator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setup MimiProcessingApplicator
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-for-creating-an-isenabled-parameter-applicator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example for creating an isEnabled parameter applicator
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wireup-applicator-in-mainactivitykt" class="md-nav__link">
+    <span class="md-ellipsis">
+      Wireup applicator in MainActivity.kt
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setting-a-value" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting a value
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="processing">Processing<a class="headerlink" href="#processing" title="Permanent link">&para;</a></h1>
+<h2 id="component-info">Component Info<a class="headerlink" href="#component-info" title="Permanent link">&para;</a></h2>
+<p>Read about the various components <a href="https://mimihearingtechnologies.github.io/SDK-Android/latest/processing/">here</a></p>
+<h2 id="initialization-and-activation">Initialization and Activation<a class="headerlink" href="#initialization-and-activation" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p>Once you have already initialized <code>MimiCore</code>, you can access the Processing APIs from the <code>ProcessingController</code> and activate a <code>ProcessingSession</code> to add <code>Applicator</code>s and modify <code>ProcessingParameter</code> values.</p>
+</li>
+<li>
+<p>When activating a <code>ProcessingSession</code>, you need to provide a <code>Fitting</code> value.</p>
+<blockquote>
+<p><code>Fitting</code> model provides data about the current processing environment and in turn how presets should be generated.</p>
+</blockquote>
+</li>
+</ul>
+<p><strong>Example:</strong></p>
+<blockquote>
+<p>Setup processing controller and session in your MainActivity.kt file</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kd">override</span><span class="w"> </span><span class="kd">fun</span><span class="w"> </span><span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span><span class="w"> </span><span class="n">Bundle?)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="k">super</span><span class="p">.</span><span class="na">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="n">setContentView</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="na">layout</span><span class="p">.</span><span class="na">activity_main</span><span class="p">)</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="c1">// Your code</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="cm">/*</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="cm">     * ----- Mimi code -----</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="cm">     * Executing this line would</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="cm">     * 1. Deactivate session</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="cm">     * 2. Activate session on configuration change</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="cm">     *</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="cm">     * This means if there are references to the old ProcessingSession</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="cm">     * which have been held at a different lifecycle scope, then they</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="cm">     * become invalid.</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="cm">     * </span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="cm">     * This should be called at the right point in your code flow.</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="cm">     * This is an example to show it being called in onCreate(). but can</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="cm">     * be called later in lifecycle as per business use-case requirement</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="cm">     */</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">    </span><span class="n">lifecycleScope</span><span class="p">.</span><span class="na">launch</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">        </span><span class="n">repeatOnLifecycle</span><span class="p">(</span><span class="n">Lifecycle</span><span class="p">.</span><span class="na">State</span><span class="p">.</span><span class="na">CREATED</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">            </span><span class="n">activateProcessingSession</span><span class="p">()</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="p">}</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="kd">private</span><span class="w"> </span><span class="kd">suspend</span><span class="w"> </span><span class="kd">fun</span><span class="w"> </span><span class="nf">activateProcessingSession</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="w">    </span><span class="kd">val</span><span class="w"> </span><span class="nv">processingController</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MimiCore</span><span class="p">.</span><span class="na">processingController</span>
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="w">    </span><span class="kd">val</span><span class="w"> </span><span class="nv">upDownDataSourceConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MimiPresetParameterDataSourceConfiguration</span><span class="p">.</span><span class="na">UpDown</span><span class="p">(</span><span class="n">fitting</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getTechLevelFromFirmware</span><span class="p">())</span>
+<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="w">        </span><span class="kd">val</span><span class="w"> </span><span class="nv">upDownPresetDataSource</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MimiCore</span><span class="p">.</span><span class="na">personalizationController</span><span class="p">.</span><span class="na">createPresetParameterDataSource</span><span class="p">(</span><span class="n">upDownDataSourceConfig</span><span class="p">)</span>
+<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="w">        </span><span class="n">processingController</span><span class="p">.</span><span class="na">activateSession</span><span class="p">(</span><span class="n">upDownPresetDataSource</span><span class="p">)</span>
+<a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="p">}</span>
+<a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>
+<a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="kd">private</span><span class="w"> </span><span class="kd">fun</span><span class="w"> </span><span class="nf">getTechLevelFromFirmware</span><span class="p">():</span><span class="w"> </span><span class="n">Fitting</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a><span class="w">    </span><span class="c1">// Usually requested via Bluetooth connection</span>
+<a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a><span class="w">    </span><span class="c1">// This is hardcoded as an example</span>
+<a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Fitting</span><span class="p">(</span><span class="n">techLevel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span><span class="p">)</span>
+<a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a><span class="p">}</span>
+</code></pre></div>
+<h2 id="processingparameter-operations"><code>ProcessingParameter</code> Operations<a class="headerlink" href="#processingparameter-operations" title="Permanent link">&para;</a></h2>
+<h3 id="reading-the-processingparameter-state">Reading the <code>ProcessingParameter</code> state<a class="headerlink" href="#reading-the-processingparameter-state" title="Permanent link">&para;</a></h3>
+<ul>
+<li>You need access to activeSession to read value from <code>ProcessingParameter</code></li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">// Acquire the active ProcessSession (assumes already activated!)</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kd">private</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">activeSession</span><span class="p">:</span><span class="w"> </span><span class="n">ProcessingSession</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">lazy</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="n">requireNotNull</span><span class="p">(</span><span class="n">MimiCore</span><span class="p">.</span><span class="na">processingController</span><span class="p">.</span><span class="na">activeSession</span><span class="p">.</span><span class="na">state</span><span class="p">)</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="p">}</span>
+</code></pre></div>
+<h4 id="example-for-accessing-isenabled-parameter">Example for accessing isEnabled parameter<a class="headerlink" href="#example-for-accessing-isenabled-parameter" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>The same style applies to other parameters i.e <code>preset</code> and <code>intensity</code>.</p>
+</blockquote>
+<p><strong>Get the <code>value</code>:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">// To force getting a value from a Parameter,</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1">// Usage: val isEnabledValue = getIsEnabledParam()</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kd">fun</span><span class="w"> </span><span class="nf">getIsEnabledParam</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">activeSession</span><span class="p">.</span><span class="na">isEnabled</span><span class="p">.</span><span class="na">value</span>
+</code></pre></div>
+<p><strong><code>observe</code> the changes in value:</strong></p>
+<p><a href="../advanced-processing/">Refer to Advanced Processing</a></p>
+<h3 id="setting-the-processingparameter-state">Setting the <code>ProcessingParameter</code> state<a class="headerlink" href="#setting-the-processingparameter-state" title="Permanent link">&para;</a></h3>
+<h3 id="defining-your-own-applicator">Defining your own Applicator<a class="headerlink" href="#defining-your-own-applicator" title="Permanent link">&para;</a></h3>
+<p>When creating an <a href="https://mimihearingtechnologies.github.io/SDK-Android/latest/processing/#adding-an-applicator-to-a-processingparameter"><code>Applicator</code></a>, we recommend delegating your <code>canApply</code> and <code>apply</code> functions to a class containing your custom processing logic. This custom processing logic depends entirely on your processing system. Generally, this approach helps make your code more modular and testable.</p>
+<blockquote>
+<p>Note: This is simplified sample code to demonstrate the general sequence and may not reflect the best structure for your particular usecase.</p>
+</blockquote>
+<h4 id="setup-mimiprocessingapplicator">Setup MimiProcessingApplicator<a class="headerlink" href="#setup-mimiprocessingapplicator" title="Permanent link">&para;</a></h4>
+<p>This class contains custom logic related to how MSDK will transfer the changes to Processing unit i.e bluetooth headset as bluetooth packets.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">import</span><span class="w"> </span><span class="nn">android.util.Log</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">import</span><span class="w"> </span><span class="nn">io.mimi.sdk.core.model.personalization.Personalization</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="kd">class</span><span class="w"> </span><span class="nc">MimiProcessingApplicator</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">TAG</span><span class="p">:</span><span class="w"> </span><span class="kt">String</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="na">javaClass</span><span class="p">.</span><span class="na">simpleName</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span><span class="kd">fun</span><span class="w"> </span><span class="nf">setPreset</span><span class="p">(</span><span class="n">preset</span><span class="p">:</span><span class="w"> </span><span class="n">Personalization</span><span class="p">.</span><span class="na">PersonalizationPreset</span><span class="o">?</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">preset</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">            </span><span class="n">clearMimiCommand</span><span class="p">()</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">            </span><span class="n">Log</span><span class="p">.</span><span class="na">d</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Send the values to the external device via bluetooth </span><span class="si">$</span><span class="n">preset</span><span class="s">&quot;</span><span class="p">)</span>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">    </span><span class="kd">fun</span><span class="w"> </span><span class="nf">setIntensity</span><span class="p">(</span><span class="n">intensity</span><span class="p">:</span><span class="w"> </span><span class="kt">Double</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">        </span><span class="n">Log</span><span class="p">.</span><span class="na">d</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Send the values to the external device via bluetooth </span><span class="si">$</span><span class="n">intensity</span><span class="s">&quot;</span><span class="p">)</span>
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="w">    </span><span class="kd">fun</span><span class="w"> </span><span class="nf">setEnabled</span><span class="p">(</span><span class="n">enabled</span><span class="p">:</span><span class="w"> </span><span class="kt">Boolean</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="w">        </span><span class="n">Log</span><span class="p">.</span><span class="na">d</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Send the values to the external device via bluetooth </span><span class="si">$</span><span class="n">enabled</span><span class="s">&quot;</span><span class="p">)</span>
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">fun</span><span class="w"> </span><span class="nf">clearMimiCommand</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="w">        </span><span class="n">Log</span><span class="p">.</span><span class="na">d</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Send Clear Command to external device via bluetooth&quot;</span><span class="p">)</span>
+<a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a><span class="p">}</span>
+</code></pre></div>
+<h4 id="example-for-creating-an-isenabled-parameter-applicator">Example for creating an isEnabled parameter applicator<a class="headerlink" href="#example-for-creating-an-isenabled-parameter-applicator" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kd">class</span><span class="w"> </span><span class="nc">IsEnabledApplicator</span><span class="p">(</span><span class="kd">private</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">applicator</span><span class="p">:</span><span class="w"> </span><span class="n">MimiProcessingApplicator</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="kd">fun</span><span class="w"> </span><span class="nf">canApply</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="kd">fun</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="n">enabled</span><span class="p">:</span><span class="w"> </span><span class="kt">Boolean</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">applicator</span><span class="p">.</span><span class="na">setEnabled</span><span class="p">(</span><span class="n">enabled</span><span class="p">)</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="wireup-applicator-in-mainactivitykt">Wireup applicator in MainActivity.kt<a class="headerlink" href="#wireup-applicator-in-mainactivitykt" title="Permanent link">&para;</a></h3>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1">// Declare an instance; depending on your usecase, you may want this to be a singleton.</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kd">private</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">mimiProcessingApplicator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MimiProcessingApplicator</span><span class="p">()</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="kd">private</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">isEnabledApplicator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IsEnabledApplicator</span><span class="p">(</span><span class="n">mimiProcessingApplicator</span><span class="p">)</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="c1">// TODO - You should use an appropriate value for your integration.</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="kd">private</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">APPLY_TIMEOUT</span><span class="p">:</span><span class="w"> </span><span class="kt">Long</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span><span class="n">_000L</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="kd">suspend</span><span class="w"> </span><span class="kd">fun</span><span class="w"> </span><span class="nf">addIsEnabledApplicator</span><span class="p">(</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">    </span><span class="n">isEnabledParam</span><span class="p">:</span><span class="w"> </span><span class="n">MimiProcessingParameter</span><span class="o">&lt;</span><span class="kt">Boolean</span><span class="o">&gt;</span><span class="p">,</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="p">):</span><span class="w"> </span><span class="n">MimiParameterApplicator</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">    </span><span class="c1">// Add the Applicator to the param, delegating the calls to your</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">    </span><span class="c1">// custom applicator logic</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">    </span><span class="kd">val</span><span class="w"> </span><span class="nv">applicator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">isEnabledParam</span><span class="p">.</span><span class="na">addApplicator</span><span class="p">(</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">      </span><span class="n">APPLY_TIMEOUT</span><span class="p">,</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="w">      </span><span class="n">isEnabledApplicator</span><span class="o">::</span><span class="n">apply</span><span class="p">,</span>
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="w">    </span><span class="p">)</span>
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="w">    </span><span class="c1">// Causes the isEnabled ProcessingParameter to push its current</span>
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="w">    </span><span class="c1">// value to the newly added Applicator</span>
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="w">    </span><span class="n">isEnabledParam</span><span class="p">.</span><span class="na">synchronizeApplicators</span><span class="p">()</span>
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">applicator</span>
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="p">}</span>
+</code></pre></div>
+Next, add the applicator to active session inside <code>activateProcessingSession()</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kd">var</span><span class="w"> </span><span class="nv">isEnabledApplicatorRef</span><span class="p">:</span><span class="w"> </span><span class="n">MimiParameterApplicator? </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="kd">private</span><span class="w"> </span><span class="kd">suspend</span><span class="w"> </span><span class="kd">fun</span><span class="w"> </span><span class="nf">activateProcessingSession</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="kd">val</span><span class="w"> </span><span class="nv">processingController</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MimiCore</span><span class="p">.</span><span class="na">processingController</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="n">processingController</span><span class="p">.</span><span class="na">activateSession</span><span class="p">(</span><span class="n">getTechLevelFromFirmware</span><span class="p">())</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="c1">// Wire up the applicator to the activeSession</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">    </span><span class="n">isEnabledApplicatorRef</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">addIsEnabledApplicator</span><span class="p">(</span><span class="n">activeSession</span><span class="p">.</span><span class="na">isEnabled</span><span class="p">)</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">    </span><span class="c1">// add more applicators here for intensity and preset</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="p">}</span>
+</code></pre></div>
+<p>Retain the <code>applicator</code> reference so that you can later remove it from the <code>ProcessingParameter</code>. </p>
+<p>Once an <code>Applicator</code> has been removed, it will no longer receive updates from the <code>ProcessingParameter</code>.</p>
+<p><strong>Example: Removing Applicator</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1">// Removes the Applicator from its ProcessingParameter so it won&#39;t receive </span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c1">// further updates.</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="kd">private</span><span class="w"> </span><span class="kd">fun</span><span class="w"> </span><span class="nf">removeIsEnabledApplicator</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span><span class="n">isEnabledApplicatorRef</span><span class="o">?.</span><span class="na">remove</span><span class="p">()</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="setting-a-value">Setting a value<a class="headerlink" href="#setting-a-value" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1">// To force set a value on a Parameter</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="c1">// Usage: setIsEnabledParam(true)</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="kd">fun</span><span class="w"> </span><span class="nf">setIsEnabledParam</span><span class="p">(</span><span class="n">flag</span><span class="p">:</span><span class="w"> </span><span class="kt">Boolean</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">    </span><span class="n">isEnabledApplicator</span><span class="p">.</span><span class="na">apply</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="p">}</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2022 Mimi Hearing Technologies GmbH
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.081f42fc.min.js"></script>
+      
+    
+  </body>
+</html>
