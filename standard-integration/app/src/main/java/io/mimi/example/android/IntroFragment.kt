@@ -57,8 +57,12 @@ class IntroFragment : Fragment() {
     // region Mimi Connected Headphones
 
     /*
+     * NOTE: FOR PARTNERS INTEGRATING THEIR HEADPHONES TO SUPPORT PTT HEARING TESTS.
+     *
+     * Volume Adjustment Sequence
+     *
      * The [connectedHeadphoneSwitch] simulates the actions that your app should take when receiving
-     * changes in headphone connectivity.
+     * changes in Bluetooth headphone connectivity.
      *
      * When headphones are connected or disconnected, your app should notify the MSDK.
      *
@@ -87,11 +91,12 @@ class IntroFragment : Fragment() {
                     mimiHeadphoneIdentifier,
                     HeadphoneApplicatorConfiguration(
                         MimiVolumeAdjustmentApplicator.instance::isAbsoluteVolumeSupported,
-                        MimiVolumeAdjustmentApplicator.instance::onSendHearingTestStartCommand,
-                        MimiVolumeAdjustmentApplicator.instance::onSendHearingTestEndCommand
+                        MimiVolumeAdjustmentApplicator.instance::sendHearingTestStartCommand,
+                        MimiVolumeAdjustmentApplicator.instance::sendHearingTestEndCommand
                     )
                 )
             } else {
+                // Notify the MSDK that the headphones have been disconnected.
                 MimiCore.testsController.notifyMimiHeadphoneDisconnected()
             }
         }
