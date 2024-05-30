@@ -38,12 +38,11 @@ class IntroFragment : Fragment() {
         }
     }
 
-    private fun View.setupSubmitAudiogramUi() {
-        findViewById<Button>(R.id.submitAudiogram).setOnClickListener {
-            // Send the custom audiogram to the Mimi SDK
-            submitAudiogram()
-        }
-    }
+    // region Mimi Profile
+
+    /*
+     * Opens the Mimi Profile UI.
+     */
 
     private fun View.setupMimiProfileLauncherUi() {
         findViewById<Button>(R.id.launchButton).setOnClickListener {
@@ -54,10 +53,13 @@ class IntroFragment : Fragment() {
             }
         }
     }
+
+    // endregion
+
     // region Mimi Connected Headphones
 
     /*
-     * NOTE: FOR PARTNERS INTEGRATING THEIR HEADPHONES TO SUPPORT PTT HEARING TESTS.
+     * NOTE: ONLY NECESSARY FOR PARTNERS INTEGRATING THEIR HEADPHONES TO SUPPORT PTT HEARING TESTS.
      *
      * Volume Adjustment Sequence
      *
@@ -74,6 +76,7 @@ class IntroFragment : Fragment() {
      * In this example, the headphone model identifier is hardcoded, however you app should ensure
      * that it reflects the currently connected headphone model.
      */
+
     private fun View.setupMimiConnectedHeadphoneUi() {
         val connectedHeadphoneSwitch = findViewById<SwitchCompat>(R.id.mimiHeadphoneConnected)
         updateConnectedMimiHeadphoneButtons(connectedHeadphoneSwitch)
@@ -116,6 +119,20 @@ class IntroFragment : Fragment() {
     // endregion
 
     // region Audiogram
+
+    /*
+     * NOTE: ONLY NECESSARY FOR PARTNERS USING EXTERNAL AUDIOGRAM DATA.
+     *
+     * This functionality cam be used to onboard users with existing audiograms, rather than
+     * through the Mimi SDK's hearing test or hearing estimation features.
+     */
+
+    private fun View.setupSubmitAudiogramUi() {
+        findViewById<Button>(R.id.submitAudiogram).setOnClickListener {
+            // Send the custom audiogram to the Mimi SDK
+            submitAudiogram()
+        }
+    }
 
     private fun submitAudiogram() = lifecycleScope.launch {
         // Check if there is a user logged in
