@@ -47,6 +47,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/divider" />
 
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/mimiHeadphoneConnected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Simulate Mimi Headphone Connection:"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/extrasTextView"
+        app:switchPadding="8dp" />
+
     <Button
         android:id="@+id/submitAudiogram"
         android:layout_width="wrap_content"
@@ -55,6 +66,6 @@
         android:text="Submit Audiogram Data"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/extrasTextView" />
+        app:layout_constraintTop_toBottomOf="@id/mimiHeadphoneConnected" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
