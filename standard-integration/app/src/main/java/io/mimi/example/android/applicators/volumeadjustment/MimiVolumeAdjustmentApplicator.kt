@@ -3,15 +3,23 @@ package io.mimi.example.android.applicators.volumeadjustment
 import android.util.Log
 import io.mimi.sdk.core.MimiCore
 import io.mimi.sdk.core.controller.TestsController
+import io.mimi.sdk.core.controller.tests.HeadphoneApplicatorConfiguration
 import io.mimi.sdk.core.controller.tests.IsAbsoluteVolumeSupportedResponse
 import io.mimi.sdk.core.controller.tests.SendHearingTestEndCommandResponse
 import io.mimi.sdk.core.controller.tests.SendHearingTestStartCommandResponse
 
+/**
+ * This class is an example to the functions required for the [HeadphoneApplicatorConfiguration].
+ *
+ * They are responsible for applying the volume adjustment commands to the connected headphones.
+ * They also need to notify the MSDK when the headphones send an HT_PAUSE notification event.
+ */
 class MimiVolumeAdjustmentApplicator(private val testsController: TestsController) {
 
     private val TAG: String = this.javaClass.simpleName
 
     companion object {
+        // We're using a singleton for simplicity in this example. You should use a DI framework to inject your dependencies.
         val instance : MimiVolumeAdjustmentApplicator by lazy {
             MimiVolumeAdjustmentApplicator(MimiCore.testsController)
         }

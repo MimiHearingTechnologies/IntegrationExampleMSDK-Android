@@ -73,8 +73,8 @@ class IntroFragment : Fragment() {
      *  - Which test types (paradigms) are available and,
      *  - How to interact with the headphones to ensure a consistent volume during the hearing test.
      *
-     * In this example, the headphone model identifier is hardcoded, however you app should ensure
-     * that it reflects the currently connected headphone model.
+     * In this example, the headphone model identifier is hardcoded. Your app should ensure
+     * that it uses the currently connected headphone model.
      */
 
     private fun View.setupMimiConnectedHeadphoneUi() {
