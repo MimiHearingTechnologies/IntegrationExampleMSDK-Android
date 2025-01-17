@@ -1,0 +1,36 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="AppDebugTheme" parent="Theme.Mimi">
+        <item name="mimiPrimaryTintColorNormal">#f783ac</item>
+        <item name="mimiPrimaryTintColorHighlighted">#a61e4d</item>
+        <item name="mimiSecondaryTintColorNormal">#da77f2</item>
+        <item name="mimiSecondaryTintColorHighlighted">#862e9c</item>
+        <item name="mimiTertiaryTintColorNormal">#9775fa</item>
+        <item name="mimiTertiaryTintColorHighlighted">#5f3dc4</item>
+
+        <item name="mimiForegroundColorNormal">#748ffc</item>
+        <item name="mimiForegroundColorHighlighted">#364fc7</item>
+
+        <item name="mimiSecondaryForegroundColorNormal">#3bc9db</item>
+        <item name="mimiSecondaryForegroundColorHighlighted">#0b7285</item>
+
+        <item name="mimiPrimaryBackgroundColor">#c6eadf</item>
+        <item name="mimiSecondaryBackgroundColor">#69db7c</item>
+        <item name="mimiElevatedBackgroundColor">#ddf1be</item>
+
+        <item name="mimiPrimaryTextColorNormal">#ffd43b</item>
+        <item name="mimiPrimaryTextColorHighlighted">#e67700</item>
+        <item name="mimiSecondaryTextColorNormal">#ffa94d</item>
+        <item name="mimiSecondaryTextColorHighlighted">#d9480f</item>
+
+        <item name="mimiSoundPersonalizationIconColor">#D24CF6</item>
+
+        <item name="mimiHearingTestButtonTextColorNormal">#EAE2DF</item>
+        <item name="mimiHearingTestButtonTextColorHighlighted">#C3C4A5</item>
+        <item name="mimiHearingTestButtonBackgroundColor">#A5ACC4</item>
+
+        <item name="mimiEarLeftColor">#B999FF</item>
+        <item name="mimiEarRightColor">#FBFAF9</item>
+    </style>
+
+</resources>
