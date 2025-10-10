@@ -2,6 +2,7 @@ package io.mimi.example.android
 
 import android.app.Application
 import android.content.Context
+import io.mimi.sdk.common.logging.MimiLog
 import io.mimi.sdk.core.MimiConfiguration
 import io.mimi.sdk.core.MimiCore
 import io.mimi.sdk.core.MimiProfilePersonalizationConfiguration
@@ -26,6 +27,7 @@ class MyApp : Application() {
                 UiControlDebounceBehavior.Debounce(500.toDuration(DurationUnit.MILLISECONDS))
             )
         )
+        // Initialize MimiCore so it's ready for use.
         MimiCore.start(
             context = context,
             configuration = configuration,
@@ -35,6 +37,7 @@ class MyApp : Application() {
     }
 
     private fun enableMimiSDKLogs() {
-        io.mimi.sdk.core.util.Log.isEnabled = BuildConfig.DEBUG
+        // Enable logging inside the MSDK (make sure you use your app's `BuildConfig` class)
+        MimiLog.isEnabled = BuildConfig.DEBUG
     }
 }
