@@ -1,16 +1,19 @@
 package io.mimi.example.android
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
 import io.mimi.example.android.applicators.volumeadjustment.MimiVolumeAdjustmentApplicator
+import io.mimi.sdk.BuildConfig
 import io.mimi.sdk.core.MimiCore
 import io.mimi.sdk.core.controller.tests.HeadphoneApplicatorConfiguration
 import io.mimi.sdk.core.model.MimiAuthRoute
@@ -44,7 +47,9 @@ class IntroFragment : Fragment() {
      * Opens the Mimi Profile UI.
      */
 
+    @SuppressLint("SetTextI18n")
     private fun View.setupMimiProfileLauncherUi() {
+        findViewById<TextView>(R.id.versionTextView).text = "MSDK Version: ${BuildConfig.VERSION_NAME}-${BuildConfig.VERSION_CODE}"
         findViewById<Button>(R.id.launchButton).setOnClickListener {
             requireActivity().supportFragmentManager.commit {
                 setReorderingAllowed(true)
