@@ -49,8 +49,9 @@ class IntroFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun View.setupMimiProfileLauncherUi() {
-        findViewById<TextView>(R.id.versionTextView).text = "MSDK Version: ${BuildConfig.VERSION_NAME}-${BuildConfig.VERSION_CODE}"
-        findViewById<Button>(R.id.launchButton).setOnClickListener {
+        findViewById<TextView>(R.id.versionTextView).text =
+            "MSDK Version: ${BuildConfig.VERSION_NAME}-${BuildConfig.VERSION_CODE}"
+        findViewById<Button>(R.id.launchProfileButton).setOnClickListener {
             requireActivity().supportFragmentManager.commit {
                 setReorderingAllowed(true)
                 add<MimiProfileFragment>(R.id.mimiContainerFragment)
@@ -172,4 +173,6 @@ class IntroFragment : Fragment() {
     }
 
     // endregion
+
+
 }
