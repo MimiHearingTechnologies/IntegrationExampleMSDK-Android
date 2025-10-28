@@ -21,10 +21,10 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import io.mimi.example.android.applicators.processing.IntensityApplicator
-import io.mimi.example.android.applicators.processing.IsEnabledApplicator
-import io.mimi.example.android.applicators.processing.MimiProcessingApplicator
-import io.mimi.example.android.applicators.processing.PresetApplicator
+import io.mimi.example.android.applicators.processing.basic.IntensityApplicator
+import io.mimi.example.android.applicators.processing.basic.IsEnabledApplicator
+import io.mimi.example.android.applicators.processing.basic.MimiProcessingApplicator
+import io.mimi.example.android.applicators.processing.basic.PresetApplicator
 import io.mimi.sdk.common.annotations.MsdkExperimentalApi
 import io.mimi.sdk.core.MimiCore
 import io.mimi.sdk.core.controller.processing.config.MimiProcessingConfiguration
@@ -45,6 +45,7 @@ import kotlinx.coroutines.launch
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
+
 
 class MainActivity : AppCompatActivity() {
 

@@ -16,7 +16,7 @@ import io.mimi.sdk.core.controller.tests.SendHearingTestStartCommandResponse
  */
 class MimiVolumeAdjustmentApplicator(private val testsController: TestsController) {
 
-    private val TAG: String = this.javaClass.simpleName
+    private val TAG: String = javaClass.simpleName
 
     companion object {
         // We're using a singleton for simplicity in this example. You should use a DI framework to inject your dependencies.

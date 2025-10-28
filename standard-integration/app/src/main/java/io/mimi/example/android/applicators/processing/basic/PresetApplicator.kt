@@ -1,4 +1,4 @@
-package io.mimi.example.android.applicators.processing
+package io.mimi.example.android.applicators.processing.basic
 
 import io.mimi.sdk.processing.MimiApplicatorResult
 import io.mimi.sdk.processing.model.Personalization

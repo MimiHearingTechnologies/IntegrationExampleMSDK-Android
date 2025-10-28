@@ -19,7 +19,7 @@ class MyApp : Application() {
 
     private fun initializeMimiCore(context: Context) {
         enableMimiSDKLogs()
-        // Profile config to debounce Mimi Personalization controls for 500 ms
+        // Profile UI configuration to debounce Mimi Personalization controls for 500 ms
         val configuration = MimiConfiguration(
             mimiProfilePersonalizationConfiguration =
             MimiProfilePersonalizationConfiguration(
@@ -37,7 +37,7 @@ class MyApp : Application() {
     }
 
     private fun enableMimiSDKLogs() {
-        // Enable logging inside the MSDK (make sure you use your app's `BuildConfig` class)
+        // Enable logging inside the MSDK (make sure you use your app's `BuildConfig` class!)
         MimiLog.isEnabled = BuildConfig.DEBUG
     }
 }

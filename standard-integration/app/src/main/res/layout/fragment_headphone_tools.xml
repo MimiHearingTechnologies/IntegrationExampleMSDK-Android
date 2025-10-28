@@ -10,16 +10,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:orientation="vertical"
+        android:gravity="center"
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/extraTextFlowSection"
+            android:id="@+id/extrasTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="TestFlow Launcher"
+            android:text="Headphone Tools"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -31,25 +30,5 @@
             android:text="Simulate Mimi Headphone Connection:"
             app:switchPadding="8dp" />
 
-        <Button
-            android:id="@+id/launchTestFlow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
-            android:text="Launch TestFlow" />
-
-        <TextView
-            android:id="@+id/testFlowResults"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="No result yet."
-            android:maxHeight="240dp"
-            android:minLines="5"
-            android:scrollbars="vertical"
-            android:textIsSelectable="true" />
-
     </LinearLayout>
-
 </androidx.cardview.widget.CardView>
