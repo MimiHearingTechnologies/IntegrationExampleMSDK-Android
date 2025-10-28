@@ -25,18 +25,22 @@ class MimiVolumeAdjustmentApplicator(private val testsController: TestsControlle
         }
     }
 
+    @Suppress("RedundantSuspendModifier")
     suspend fun isAbsoluteVolumeSupported() : IsAbsoluteVolumeSupportedResponse {
         Log.d(TAG, "TODO() - Using Bluetooth query whether the headphones supports Bluetooth Absolute Volume and return the result")
         // TODO Read the result from the response payload and return it.
         val fakeIsAbsoluteVolumeSupported = true
         return IsAbsoluteVolumeSupportedResponse(isAbsoluteVolumeSupported = fakeIsAbsoluteVolumeSupported)
     }
+
+    @Suppress("RedundantSuspendModifier")
     suspend fun sendHearingTestStartCommand() : SendHearingTestStartCommandResponse {
         Log.d(TAG, "TODO() - Using Bluetooth, send the hearing test start command.")
         // TODO Read the current headphone volume from the response payload and return it.
         val fakeResponseVolume = 63
         return SendHearingTestStartCommandResponse(fakeResponseVolume)
     }
+    @Suppress("RedundantSuspendModifier")
     suspend fun sendHearingTestEndCommand() : SendHearingTestEndCommandResponse {
         Log.d(TAG, "TODO() - Using Bluetooth, send the hearing test end command.")
         // TODO Read the current headphone volume from the response payload and return it.

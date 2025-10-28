@@ -32,6 +32,7 @@ class IntroFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun View.setupMimiInfoPanel() {
+        @Suppress("RemoveRedundantQualifierName")
         findViewById<TextView>(R.id.versionTextView).text =
             "MSDK Version: ${io.mimi.sdk.BuildConfig.VERSION_NAME}-${BuildConfig.VERSION_CODE}"
     }
