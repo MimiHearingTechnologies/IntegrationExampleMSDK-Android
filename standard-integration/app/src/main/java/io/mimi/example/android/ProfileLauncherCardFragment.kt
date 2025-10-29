@@ -17,7 +17,17 @@ import io.mimi.sdk.core.model.MimiAuthRoute
 import io.mimi.sdk.profile.MimiProfileFragment
 import kotlinx.coroutines.launch
 
-class ProfileLauncherFragment : Fragment(R.layout.fragment_profile_launcher_card) {
+/**
+ * An example of how to include the [io.mimi.sdk.profile.MimiProfileFragment] in your application.
+ *
+ * Provides additional "debug" controls to allow quick authentication and onboarding of a user. In
+ * your application.
+ *
+ * The MimiProfileFragment requires a Theme derived from Theme.Mimi, which is an AppCompat theme,
+ * so you're using Compose with a ComponentActivity, then you'll need to launch MimiProfileFragment
+ * in its own Activity with its `android:theme` defined appropriately in the `AndroidManifest.xml` (not shown here).
+ */
+class ProfileLauncherCardFragment : Fragment(R.layout.fragment_profile_launcher_card) {
 
     private val TAG = this::class.simpleName
 
@@ -66,13 +76,13 @@ class ProfileLauncherFragment : Fragment(R.layout.fragment_profile_launcher_card
             updateUserSwitchUi()
 
             setOnCheckedChangeListener { _, isChecked ->
-                Log.d(TAG, "setupMimiProfileLauncherUi() - isChecked: $isChecked")
                 val shouldDelete =
                     !isChecked && MimiCore.userController.mimiUser.state.value != null
                 val shouldAuthenticate =
                     isChecked && MimiCore.userController.mimiUser.state.value == null
                 lifecycleScope.launch {
                     if (shouldAuthenticate) {
+                        Log.d(TAG, "Authenticating user")
                         try {
                             val user = if (shouldIncludeYearOfBirthCheckBox.isChecked) {
                                 MimiCore.userController.authenticate(MimiAuthRoute.Anonymously)
@@ -103,9 +113,6 @@ class ProfileLauncherFragment : Fragment(R.layout.fragment_profile_launcher_card
 
         findViewById<Button>(R.id.launchProfileButton).apply {
             setOnClickListener {
-                // The MimiProfileFragment requires the use of a Theme derived from Theme.Mimi,
-                // an AppCompat theme, so you're using a ComponentActivity with Compose, then
-                // you'll need to launch MimiProfileFragment in its own Activity (not shown here).
                 requireActivity().supportFragmentManager.commit {
                     setReorderingAllowed(true)
                     replace<MimiProfileFragment>(R.id.mimiContainerFragment)

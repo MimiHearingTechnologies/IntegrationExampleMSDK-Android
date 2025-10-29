@@ -17,6 +17,8 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 /**
+ * Note: You need an authenticated user to launch the [TestFlowActivity].
+ *
  * Some applications don't use the Mimi Profile [io.mimi.sdk.profile.MimiProfileFragment], rather they
  * launch their own instance of the [TestFlowActivity]. This is appropriate for app which focus on providing
  * Hearing Tests, rather than Sound Personalization.
@@ -29,6 +31,9 @@ import org.json.JSONObject
  * You could use the [io.mimi.sdk.core.moshi] object to deserialize it.
  *
  * Note: This is uses the deprecated Android technique for launching an Activity for a result.
+ *
+ * This Fragment also shows how to inform the MSDK of the currently connected headphone model before
+ * launching [TestFlowActivity] to improve PTT Hearing Test accuracy.
  */
 class TestFlowLauncherCardFragment : Fragment(R.layout.fragment_test_flow_launcher_card) {
 
@@ -84,8 +89,6 @@ class TestFlowLauncherCardFragment : Fragment(R.layout.fragment_test_flow_launch
 
     /**
      * NOTE: ONLY NECESSARY FOR PARTNERS INTEGRATING THEIR HEADPHONES TO SUPPORT PTT HEARING TESTS.
-     *
-     * Volume Adjustment Sequence
      *
      * The [connectedHeadphoneSwitch] simulates the actions that your app should take when receiving
      * changes in Bluetooth headphone connectivity.

@@ -13,14 +13,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center"
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/extrasTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="External Audiogram"
+            android:layout_gravity="center_horizontal"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -28,6 +27,7 @@
             android:id="@+id/submitAudiogram"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
             android:text="Submit Audiogram Data" />
 

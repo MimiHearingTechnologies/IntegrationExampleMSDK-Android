@@ -21,26 +21,8 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import io.mimi.example.android.applicators.processing.basic.IntensityApplicator
-import io.mimi.example.android.applicators.processing.basic.IsEnabledApplicator
-import io.mimi.example.android.applicators.processing.basic.MimiProcessingApplicator
-import io.mimi.example.android.applicators.processing.basic.PresetApplicator
-import io.mimi.sdk.common.annotations.MsdkExperimentalApi
 import io.mimi.sdk.core.MimiCore
-import io.mimi.sdk.core.controller.processing.config.MimiProcessingConfiguration
-import io.mimi.sdk.core.controller.processing.config.dsl.basic.dsl.applicators
-import io.mimi.sdk.core.controller.processing.config.dsl.basic.dsl.fineTuning
-import io.mimi.sdk.core.controller.processing.config.dsl.basic.dsl.intensity
-import io.mimi.sdk.core.controller.processing.config.dsl.basic.dsl.isEnabled
-import io.mimi.sdk.core.controller.processing.config.dsl.basic.dsl.preset
-import io.mimi.sdk.core.controller.processing.config.dsl.basic.dsl.soundPersonalization
-import io.mimi.sdk.core.controller.processing.config.dsl.mimiBasicProcessingConfiguration
-import io.mimi.sdk.core.controller.processing.config.model.basic.PersonalizationModeConfiguration
-import io.mimi.sdk.core.controller.processing.config.model.basic.ProcessingParameterConfiguration
-import io.mimi.sdk.core.controller.processing.config.model.basic.SoundPersonalizationFeatureConfiguration
-import io.mimi.sdk.core.controller.processing.config.model.basic.SoundPersonalizationParametersConfiguration
 import io.mimi.sdk.processing.ProcessingSession
-import io.mimi.sdk.processing.model.Fitting
 import kotlinx.coroutines.launch
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
@@ -49,27 +31,12 @@ import kotlin.time.toDuration
 
 class MainActivity : AppCompatActivity() {
 
-    private val tag: String = this::class.java.simpleName
+    private val TAG: String = this::class.java.simpleName
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         registerLocationServiceStateReceiver()
-
-        /*
-         * Executing this line would
-         * 1. Deactivate session
-         * 2. Activate session on configuration change
-         *
-         * This means if there are references to the old ProcessingSession
-         * which have been held at a different lifecycle scope, then they
-         * become invalid.
-         */
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.CREATED) {
-                activateBasicProcessingSession()
-            }
-        }
     }
 
     //region Permission Handling
@@ -235,7 +202,7 @@ class MainActivity : AppCompatActivity() {
             if (action != null && action == LocationManager.MODE_CHANGED_ACTION) {
                 val isEnabled = areLocationServicesEnabled()
                 val logMessage = if (isEnabled) "on" else "off"
-                Log.i(tag, "Location service state changed to: $logMessage")
+                Log.i(TAG, "Location service state changed to: $logMessage")
                 checkPermissions()
             }
         }
@@ -255,89 +222,9 @@ class MainActivity : AppCompatActivity() {
                 checkPermissions()
             }
         } else {
-            Log.e(tag, "This device has no Bluetooth hardware")
+            Log.e(TAG, "This device has no Bluetooth hardware")
         }
     }
     //endregion
 
-    //region Mimi
-    // Acquire the active ProcessSession (assumes already activated!)
-    private val activeSession: ProcessingSession by lazy { requireNotNull(MimiCore.processingController.activeSession.state.value) }
-
-    private val applicator = MimiProcessingApplicator()
-    private val isEnabledApplicator = IsEnabledApplicator(applicator)
-    private val intensityApplicator = IntensityApplicator(applicator)
-    private val presetApplicator = PresetApplicator(applicator)
-
-    // You should define a timeout which best suits your integration
-    // This example is 10 seconds and we've chosen it to be the same for all parameters.
-    private val APPLY_TIMEOUT: Duration = 10.toDuration(DurationUnit.SECONDS)
-
-    private suspend fun activateBasicProcessingSession() {
-
-        val basicConfig = defineMimiBasicProcessingConfiguration()
-        MimiCore.processingController.activateSession(basicConfig)
-
-        // Wire up the applicators to the activeSession
-        // In this example we don't want to handle the result of the synchronization
-        // Any failure will reported in the Mimi Profile UI.
-        with(activeSession.soundPersonalization?.media) {
-            this?.isEnabled?.synchronizeApplicator()
-            this?.intensity?.synchronizeApplicator()
-            this?.preset?.synchronizeApplicator()
-        }
-    }
-
-    private fun defineMimiBasicProcessingConfiguration(): MimiProcessingConfiguration {
-        return MimiProcessingConfiguration.Basic(
-            soundPersonalization = SoundPersonalizationFeatureConfiguration(
-                mode = PersonalizationModeConfiguration.FineTuning(fitting = getTechLevelFromFirmware()),
-                parameterConfiguration = SoundPersonalizationParametersConfiguration(
-                    isEnabled = ProcessingParameterConfiguration(
-                        APPLY_TIMEOUT,
-                        isEnabledApplicator::apply
-                    ),
-                    intensity = ProcessingParameterConfiguration(
-                        APPLY_TIMEOUT,
-                        intensityApplicator::apply
-                    ),
-                    preset = ProcessingParameterConfiguration(
-                        APPLY_TIMEOUT,
-                        presetApplicator::apply
-                    ),
-                )
-            )
-        )
-    }
-
-    // An alternative syntax - still experimental, so opt-in is required!
-    @OptIn(MsdkExperimentalApi::class)
-    private fun defineMimiProcessingConfigurationUsingDsl(): MimiProcessingConfiguration {
-        return mimiBasicProcessingConfiguration {
-            soundPersonalization {
-                fineTuning {
-                    fitting = getTechLevelFromFirmware()
-                }
-                applicators {
-                    isEnabled(APPLY_TIMEOUT) {
-                        isEnabledApplicator.apply(it)
-                    }
-                    intensity(APPLY_TIMEOUT) {
-                        intensityApplicator.apply(it)
-                    }
-                    preset(APPLY_TIMEOUT) {
-                        presetApplicator.apply(it)
-                    }
-                }
-            }
-        }
-    }
-
-    private fun getTechLevelFromFirmware(): Fitting {
-        // Usually requested from the headphones via Bluetooth connection
-        // TODO - This is hardcoded as an example!
-        return Fitting(techLevel = 4)
-    }
-
-    //endregion
 }

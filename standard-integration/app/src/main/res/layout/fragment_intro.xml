@@ -32,7 +32,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/mimiLaunchProfileContainerFragment"
-            android:name="io.mimi.example.android.ProfileLauncherFragment"
+            android:name="io.mimi.example.android.ProfileLauncherCardFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginVertical="4dp"
@@ -41,6 +41,14 @@
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/mimiTestFlowLauncherContainerFragment"
             android:name="io.mimi.example.android.TestFlowLauncherCardFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="4dp"
+            tools:context=".MainActivity" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/mimiProcessingContainerFragment"
+            android:name="io.mimi.example.android.ProcessingCardFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="4dp"
