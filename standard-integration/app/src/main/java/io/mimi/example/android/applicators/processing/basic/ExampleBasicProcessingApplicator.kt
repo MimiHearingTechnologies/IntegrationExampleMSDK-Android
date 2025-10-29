@@ -1,10 +1,10 @@
-package io.mimi.example.android.applicators.processing
+package io.mimi.example.android.applicators.processing.basic
 
 import android.util.Log
 import io.mimi.sdk.processing.MimiApplicatorResult
 import io.mimi.sdk.processing.model.Personalization
 
-class MimiProcessingApplicator {
+class ExampleBasicProcessingApplicator {
 
     private val TAG: String = this.javaClass.simpleName
 

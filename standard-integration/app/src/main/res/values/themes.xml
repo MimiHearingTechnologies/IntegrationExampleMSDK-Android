@@ -3,6 +3,6 @@
     <style name="AppTheme" parent="Theme.Mimi">
         <!-- Status bar color. -->
         <item name="android:statusBarColor" >?mimiPrimaryTintColorNormal</item>
-        <!-- Customize your theme here. -->
+        <!-- Customize your Mimi theme here. -->
     </style>
 </resources>
