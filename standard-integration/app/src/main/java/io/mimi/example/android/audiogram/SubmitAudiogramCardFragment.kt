@@ -1,11 +1,12 @@
-package io.mimi.example.android
+package io.mimi.example.android.audiogram
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import io.mimi.example.android.R
 import io.mimi.sdk.core.MimiCore
 import io.mimi.sdk.core.model.MimiAuthRoute
 import io.mimi.sdk.core.model.tests.MimiTestAudiogram
@@ -13,13 +14,12 @@ import io.mimi.sdk.core.model.tests.TestAudiogramMetadata
 import kotlinx.coroutines.launch
 import java.util.Date
 
-
 /**
  * Example of how to onboard a user via external audiogram data.
  *
  * This makes a remote call to the Mimi backend, and creates a [io.mimi.sdk.core.model.tests.MimiTestResult].
  *
- * The [MimiCore.testsController.latestTestResults] is automatically updated.
+ * The [io.mimi.sdk.core.MimiCore.testsController.latestTestResults] is automatically updated.
  *
  * This functionality can be used to onboard users with existing audiograms from external sources,
  * rather than through the Mimi SDK's hearing test or hearing estimation features.

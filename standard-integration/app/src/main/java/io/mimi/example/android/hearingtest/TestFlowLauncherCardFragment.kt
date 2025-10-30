@@ -1,12 +1,13 @@
-package io.mimi.example.android
+package io.mimi.example.android.hearingtest
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
+import androidx.fragment.app.Fragment
+import io.mimi.example.android.R
 import io.mimi.example.android.applicators.volumeadjustment.MimiVolumeAdjustmentApplicator
 import io.mimi.sdk.common.annotations.MsdkInternalApi
 import io.mimi.sdk.core.MimiCore
@@ -17,10 +18,10 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 /**
- * Note: You need an authenticated user to launch the [TestFlowActivity].
+ * Note: You need an authenticated user to launch the [io.mimi.sdk.testflow.activity.TestFlowActivity].
  *
  * Some applications don't use the Mimi Profile [io.mimi.sdk.profile.MimiProfileFragment], rather they
- * launch their own instance of the [TestFlowActivity]. This is appropriate for app which focus on providing
+ * launch their own instance of the [io.mimi.sdk.testflow.activity.TestFlowActivity]. This is appropriate for app which focus on providing
  * Hearing Tests, rather than Sound Personalization.
  *
  * This example, directly launches the [io.mimi.sdk.testflow.activity.TestFlowActivity] and displays the result data
@@ -33,7 +34,7 @@ import org.json.JSONObject
  * Note: This is uses the deprecated Android technique for launching an Activity for a result.
  *
  * This Fragment also shows how to inform the MSDK of the currently connected headphone model before
- * launching [TestFlowActivity] to improve PTT Hearing Test accuracy.
+ * launching [io.mimi.sdk.testflow.activity.TestFlowActivity] to improve PTT Hearing Test accuracy.
  */
 class TestFlowLauncherCardFragment : Fragment(R.layout.fragment_test_flow_launcher_card) {
 
@@ -56,14 +57,14 @@ class TestFlowLauncherCardFragment : Fragment(R.layout.fragment_test_flow_launch
 
     @OptIn(MsdkInternalApi::class)
     private fun launchTestFlowForResult() {
-        val intent = TestFlowActivity.intent(requireActivity())
+        val intent = TestFlowActivity.Companion.intent(requireActivity())
         startActivityForResult(intent, 10)
     }
 
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        val resultJson = data?.getStringExtra(TestFlowActivity.EXTRA_HEARING_TEST_RESULTS)
+        val resultJson = data?.getStringExtra(TestFlowActivity.Companion.EXTRA_HEARING_TEST_RESULTS)
 
         val resultsTextView = view?.findViewById<TextView>(R.id.testFlowResults)
         resultsTextView?.apply {
@@ -95,7 +96,7 @@ class TestFlowLauncherCardFragment : Fragment(R.layout.fragment_test_flow_launch
      *
      * When headphones are connected or disconnected, your app should notify the MSDK.
      *
-     * When the TestFlow is launched, it will read from [MimiCore.testsController.connectedMimiHeadphone]
+     * When the TestFlow is launched, it will read from [io.mimi.sdk.core.MimiCore.testsController.connectedMimiHeadphone]
      * to determine:
      *  - Which test types (paradigms) are available and,
      *  - How to interact with the headphones to ensure a consistent volume during the hearing test.
@@ -131,9 +132,9 @@ class TestFlowLauncherCardFragment : Fragment(R.layout.fragment_test_flow_launch
                 MimiCore.testsController.notifyMimiHeadphoneConnected(
                     headphoneIdentifier = mimiHeadphoneIdentifier,
                     applicatorConfiguration = HeadphoneApplicatorConfiguration(
-                        MimiVolumeAdjustmentApplicator.instance::isAbsoluteVolumeSupported,
-                        MimiVolumeAdjustmentApplicator.instance::sendHearingTestStartCommand,
-                        MimiVolumeAdjustmentApplicator.instance::sendHearingTestEndCommand
+                        MimiVolumeAdjustmentApplicator.Companion.instance::isAbsoluteVolumeSupported,
+                        MimiVolumeAdjustmentApplicator.Companion.instance::sendHearingTestStartCommand,
+                        MimiVolumeAdjustmentApplicator.Companion.instance::sendHearingTestEndCommand
                     )
                 )
             } else {
