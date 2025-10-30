@@ -1,4 +1,4 @@
-package io.mimi.example.android
+package io.mimi.example.android.processing
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

@@ -1,17 +1,18 @@
-package io.mimi.example.android
+package io.mimi.example.android.profile
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.Toast
 import androidx.appcompat.widget.SwitchCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.lifecycle.lifecycleScope
+import io.mimi.example.android.R
 import io.mimi.sdk.core.MimiCore
 import io.mimi.sdk.core.model.MimiAuthRoute
 import io.mimi.sdk.profile.MimiProfileFragment
@@ -124,5 +125,3 @@ class ProfileLauncherCardFragment : Fragment(R.layout.fragment_profile_launcher_
     }
 
 }
-
-

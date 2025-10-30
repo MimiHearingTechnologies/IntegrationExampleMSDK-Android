@@ -1,4 +1,4 @@
-package io.mimi.example.android
+package io.mimi.example.android.processing
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -13,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import io.mimi.example.android.R
 import io.mimi.sdk.core.common.LoadingState
 import kotlinx.coroutines.launch
 
