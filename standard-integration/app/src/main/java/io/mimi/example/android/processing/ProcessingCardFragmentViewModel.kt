@@ -12,7 +12,7 @@ import io.mimi.example.android.applicators.processing.basic.PresetApplicator
 import io.mimi.sdk.common.annotations.MsdkExperimentalApi
 import io.mimi.sdk.common.observable.asFlow
 import io.mimi.sdk.core.MimiCore
-import io.mimi.sdk.core.common.LoadingState
+import io.mimi.sdk.common.LoadingState
 import io.mimi.sdk.core.controller.processing.config.MimiProcessingConfiguration
 import io.mimi.sdk.core.controller.processing.config.dsl.automatic.dsl.applicator
 import io.mimi.sdk.core.controller.processing.config.dsl.automatic.dsl.processor
