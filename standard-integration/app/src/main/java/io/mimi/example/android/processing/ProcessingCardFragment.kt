@@ -14,7 +14,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import io.mimi.example.android.R
-import io.mimi.sdk.core.common.LoadingState
+import io.mimi.sdk.common.LoadingState
 import kotlinx.coroutines.launch
 
 /**
