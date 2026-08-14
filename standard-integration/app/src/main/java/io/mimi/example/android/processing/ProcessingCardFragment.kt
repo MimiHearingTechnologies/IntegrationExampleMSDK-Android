@@ -38,7 +38,9 @@ class ProcessingCardFragment : Fragment(R.layout.fragment_processing_card) {
 
     private val TAG = this::class.simpleName
 
-    private val processingViewModel by activityViewModels<ProcessingCardFragmentViewModel>()
+    private val processingViewModel by activityViewModels<ProcessingCardFragmentViewModel> {
+        ProcessingCardFragmentViewModel.Factory
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -58,11 +60,11 @@ class ProcessingCardFragment : Fragment(R.layout.fragment_processing_card) {
                 }
                 findViewById<ProgressBar>(R.id.sessionProgressBar)?.apply {
                     val isVisible = uiState.loadingState == LoadingState.InProgress
-                    visibility = if(isVisible) View.VISIBLE else View.GONE
+                    visibility = if (isVisible) View.VISIBLE else View.GONE
                 }
                 findViewById<TextView>(R.id.sessionStatusTxt)?.apply {
                     val isVisible = uiState.loadingState is LoadingState.Failure
-                    visibility = if(isVisible) View.VISIBLE else View.GONE
+                    visibility = if (isVisible) View.VISIBLE else View.GONE
                 }
             }
         }
@@ -82,6 +84,7 @@ class ProcessingCardFragment : Fragment(R.layout.fragment_processing_card) {
                 R.id.basicProcessingRadioBtn -> {
                     processingViewModel.deactivateSession()
                 }
+
                 R.id.autoProcessingRadioBtn -> {
 
                     processingViewModel.deactivateSession()

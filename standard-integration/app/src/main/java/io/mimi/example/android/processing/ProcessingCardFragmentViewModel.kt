@@ -2,17 +2,20 @@ package io.mimi.example.android.processing
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import io.mimi.example.android.MyApp
 import io.mimi.example.android.applicators.processing.automatic.FakeAutomaticProcessorCommunicationPlugin
-import io.mimi.example.android.applicators.processing.automatic.FakeAutomaticProcessorDevice
 import io.mimi.example.android.applicators.processing.basic.ExampleBasicProcessingApplicator
 import io.mimi.example.android.applicators.processing.basic.IntensityApplicator
 import io.mimi.example.android.applicators.processing.basic.IsEnabledApplicator
 import io.mimi.example.android.applicators.processing.basic.PresetApplicator
+import io.mimi.sdk.common.LoadingState
 import io.mimi.sdk.common.annotations.MsdkExperimentalApi
 import io.mimi.sdk.common.observable.asFlow
 import io.mimi.sdk.core.MimiCore
-import io.mimi.sdk.common.LoadingState
 import io.mimi.sdk.core.controller.processing.config.MimiProcessingConfiguration
 import io.mimi.sdk.core.controller.processing.config.dsl.automatic.dsl.applicator
 import io.mimi.sdk.core.controller.processing.config.dsl.automatic.dsl.processor
@@ -50,11 +53,29 @@ import kotlin.time.toDuration
  * your headphones adopt new firmware.
  */
 class ProcessingCardFragmentViewModel(
+    private val automaticProcessorPlugin: FakeAutomaticProcessorCommunicationPlugin,
     private val basicApplicator: ExampleBasicProcessingApplicator = ExampleBasicProcessingApplicator(),
-    private val automaticProcessorPlugin: FakeAutomaticProcessorCommunicationPlugin =
-        FakeAutomaticProcessorCommunicationPlugin(FakeAutomaticProcessorDevice())
 ) :
     ViewModel() {
+
+    companion object {
+        /**
+         * Supplies the dependencies which are owned by the Application, rather than by this screen.
+         *
+         * The Processor communication plugin is built here so that every ViewModel instance talks
+         * to the same [io.mimi.debug.mock.MockProcessorDevice] held by [MyApp].
+         */
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val app = this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as MyApp
+                ProcessingCardFragmentViewModel(
+                    automaticProcessorPlugin = FakeAutomaticProcessorCommunicationPlugin(
+                        app.mockAutomaticProcessorDevice
+                    )
+                )
+            }
+        }
+    }
 
     private val TAG = this::class.simpleName
 

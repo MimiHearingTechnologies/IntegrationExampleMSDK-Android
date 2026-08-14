@@ -27,11 +27,17 @@
             android:layout_height="wrap_content"
             android:text="Assign example Year of Birth" />
 
+        <!--
+            saveEnabled="false" because this switch does not own its state - it only reflects the
+            MimiUser state held by the MSDK. Restoring a stale checked value would otherwise
+            contradict the MSDK once the Fragment's view is recreated.
+        -->
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/mimiAuthenticateUserSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:saveEnabled="false"
             android:text="User authenticated:"
             app:switchPadding="8dp" />
 

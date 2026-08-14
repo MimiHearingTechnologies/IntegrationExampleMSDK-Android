@@ -59,7 +59,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation  "androidx.fragment:fragment-ktx:1.7.1"
+    implementation "androidx.fragment:fragment-ktx:1.7.1"
 
     // Testing deps
     testImplementation 'junit:junit:4.13.2'
@@ -73,6 +73,7 @@ dependencies {
 
     // Mimi SDK
     implementation "io.mimi:sdk:$rootProject.ext.msdkVer"
+    implementation "io.mimi:msdk-debug-mocks:$rootProject.ext.msdkDebugMocksVer"
     constraints {
         implementation('com.mixpanel.android:mixpanel-android:7.5.2') {
             because 'fixes transitive dependency issue https://github.com/mixpanel/mixpanel-android/issues/800'
