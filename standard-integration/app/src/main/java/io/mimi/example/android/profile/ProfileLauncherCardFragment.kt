@@ -1,8 +1,6 @@
 package io.mimi.example.android.profile
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
@@ -11,10 +9,11 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import io.mimi.example.android.R
-import io.mimi.sdk.core.MimiCore
-import io.mimi.sdk.core.model.MimiAuthRoute
 import io.mimi.sdk.profile.MimiProfileFragment
 import kotlinx.coroutines.launch
 
@@ -30,27 +29,33 @@ import kotlinx.coroutines.launch
  */
 class ProfileLauncherCardFragment : Fragment(R.layout.fragment_profile_launcher_card) {
 
-    private val TAG = this::class.simpleName
+    private val profileViewModel by viewModels<ProfileLauncherCardViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(view) {
             setupMimiProfileLauncherUi()
+            observeUiState()
+            observeMessages()
         }
     }
 
-    override fun onResume() {
-        Log.d(TAG, "onResume()")
-        super.onResume()
-        updateUserSwitchUi() // make sure up-to-date, if deleted from Profile.
+    private fun View.observeUiState() = lifecycleScope.launch {
+        // Re-collecting on each RESUMED keeps the switch up-to-date, for example when the user was
+        // deleted from within the Mimi Profile.
+        viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            profileViewModel.uiState.collect { uiState ->
+                findViewById<SwitchCompat>(R.id.mimiAuthenticateUserSwitch).isChecked =
+                    uiState.isUserAuthenticated
+            }
+        }
     }
 
-    private fun updateUserSwitchUi() {
-        val authenticateUserSwitch =
-            view?.findViewById<SwitchCompat>(R.id.mimiAuthenticateUserSwitch)
-        authenticateUserSwitch?.apply {
-            val isUserAuthenticated = MimiCore.userController.mimiUser.state.value != null
-            isChecked = isUserAuthenticated
+    private fun observeMessages() = lifecycleScope.launch {
+        viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            profileViewModel.messages.collect { message ->
+                Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -58,70 +63,30 @@ class ProfileLauncherCardFragment : Fragment(R.layout.fragment_profile_launcher_
      * Opens the Mimi Profile UI.
      */
 
-    @SuppressLint("SetTextI18n")
     private fun View.setupMimiProfileLauncherUi() {
 
-        Log.d(TAG, "setupMimiProfileLauncherUi()")
-        // Controls to create an anonymous user before launching the Mimi Profile to simulate an existing user.
-        //
-        // If the "YoB" is defined, then the user is considered "onboarded" and the Profile skips
-        // the introduction and onboarding screens.
-        //
-        // Note: Users are also onboarded if they have a Hearing Test submission.
+        // Controls to create an anonymous user before launching the Mimi Profile to simulate an
+        // existing user.
         val shouldIncludeYearOfBirthCheckBox = findViewById<CheckBox>(R.id.include_yob_checkbox)
-        val exampleYoBForDemo = 1984
 
-        val authenticateUserSwitch = findViewById<SwitchCompat>(R.id.mimiAuthenticateUserSwitch)
-        authenticateUserSwitch.apply {
-
-            updateUserSwitchUi()
-
-            setOnCheckedChangeListener { _, isChecked ->
-                val shouldDelete =
-                    !isChecked && MimiCore.userController.mimiUser.state.value != null
-                val shouldAuthenticate =
-                    isChecked && MimiCore.userController.mimiUser.state.value == null
-                lifecycleScope.launch {
-                    if (shouldAuthenticate) {
-                        Log.d(TAG, "Authenticating user")
-                        try {
-                            val user = if (shouldIncludeYearOfBirthCheckBox.isChecked) {
-                                MimiCore.userController.authenticate(MimiAuthRoute.Anonymously)
-                                MimiCore.userController.submitYearOfBirth(exampleYoBForDemo)
-                            } else {
-                                MimiCore.userController.authenticate(MimiAuthRoute.Anonymously)
-                            }
-                            Toast.makeText(
-                                requireActivity(),
-                                "Created user: ${user.id}",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        } catch (e: Exception) {
-                            Toast.makeText(
-                                requireActivity(),
-                                "Failed to create user: $e",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    } else if (shouldDelete) {
-                        // Delete the user
-                        Log.d(TAG, "Deleting current user")
-                        MimiCore.userController.logout()
-                    }
-                }
-            }
+        // Note: this is an OnClickListener, and deliberately not an OnCheckedChangeListener.
+        //       A CompoundButton only invokes its OnClickListener for real user interaction,
+        //       whereas OnCheckedChangeListener also fires when `isChecked` is set programmatically
+        //       and when the saved view state is restored - which is not user intent.
+        findViewById<SwitchCompat>(R.id.mimiAuthenticateUserSwitch).setOnClickListener { switch ->
+            profileViewModel.onAuthenticatedSwitchClicked(
+                isChecked = (switch as SwitchCompat).isChecked,
+                includeYearOfBirth = shouldIncludeYearOfBirthCheckBox.isChecked
+            )
         }
 
-        findViewById<Button>(R.id.launchProfileButton).apply {
-            setOnClickListener {
-                requireActivity().supportFragmentManager.commit {
-                    setReorderingAllowed(true)
-                    replace<MimiProfileFragment>(R.id.mimiContainerFragment)
-                    addToBackStack("main")
-                }
+        findViewById<Button>(R.id.launchProfileButton).setOnClickListener {
+            requireActivity().supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                replace<MimiProfileFragment>(R.id.mimiContainerFragment)
+                addToBackStack("main")
             }
         }
-
     }
 
 }

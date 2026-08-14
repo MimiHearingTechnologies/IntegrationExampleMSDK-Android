@@ -51,6 +51,7 @@ ext {
     mimiClientID = getBuildProperty("mimiClientID", "CLIENT_ID")
     mimiClientSecret = getBuildProperty("mimiClientSecret", "CLIENT_SECRET")
     msdkVer = "13.1.0"
+    msdkDebugMocksVer = "0.3.0"
 }
 
 //region Get ENV vars
