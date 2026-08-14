@@ -71,6 +71,46 @@
             android:textColor="?mimiErrorColor"
             android:id="@+id/sessionStatusTxt"/>
 
+        <!-- region UpDown Presets Visualization -->
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="16dp"
+            android:background="@color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="UpDown Presets Visualization"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Only available while the media preset uses the UpDown DataSource."
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/loadUpDownVisualizationButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:text="Load Visualization" />
+
+        <TextView
+            android:id="@+id/upDownVisualizationTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="monospace"
+            android:textSize="12sp"
+            tools:text="Original\n  L: 0.05 0.06" />
+
+        <!-- endregion -->
+
     </LinearLayout>
 
 

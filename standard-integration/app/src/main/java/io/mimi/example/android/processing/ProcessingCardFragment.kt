@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.RadioGroup
 import android.widget.TextView
@@ -46,6 +47,7 @@ class ProcessingCardFragment : Fragment(R.layout.fragment_processing_card) {
         super.onViewCreated(view, savedInstanceState)
         with(view) {
             setupMimiProcessingConfigurationUi()
+            setupUpDownVisualizationUi()
             observeUiState()
         }
     }
@@ -66,9 +68,31 @@ class ProcessingCardFragment : Fragment(R.layout.fragment_processing_card) {
                     val isVisible = uiState.loadingState is LoadingState.Failure
                     visibility = if (isVisible) View.VISIBLE else View.GONE
                 }
+                renderUpDownVisualization(uiState)
             }
         }
     }
+
+    // region UpDown Presets Visualization
+
+    private fun View.renderUpDownVisualization(uiState: ProcessingCardFragmentViewModel.UiState) {
+        findViewById<Button>(R.id.loadUpDownVisualizationButton)?.apply {
+            isEnabled = uiState.isUpDownVisualizationAvailable &&
+                    !uiState.isLoadingUpDownVisualization
+        }
+        findViewById<TextView>(R.id.upDownVisualizationTxt)?.apply {
+            text = uiState.upDownVisualizationText.orEmpty()
+            visibility = if (uiState.upDownVisualizationText != null) View.VISIBLE else View.GONE
+        }
+    }
+
+    private fun View.setupUpDownVisualizationUi() {
+        findViewById<Button>(R.id.loadUpDownVisualizationButton).setOnClickListener {
+            processingViewModel.loadUpDownVisualization()
+        }
+    }
+
+    // endregion
 
     /*
      * Opens the Mimi Profile UI.

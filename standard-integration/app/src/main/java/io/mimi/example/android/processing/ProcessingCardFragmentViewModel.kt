@@ -14,6 +14,7 @@ import io.mimi.example.android.applicators.processing.basic.IsEnabledApplicator
 import io.mimi.example.android.applicators.processing.basic.PresetApplicator
 import io.mimi.sdk.common.LoadingState
 import io.mimi.sdk.common.annotations.MsdkExperimentalApi
+import io.mimi.sdk.common.annotations.MsdkInternalApi
 import io.mimi.sdk.common.observable.asFlow
 import io.mimi.sdk.core.MimiCore
 import io.mimi.sdk.core.controller.processing.config.MimiProcessingConfiguration
@@ -33,7 +34,11 @@ import io.mimi.sdk.core.controller.processing.config.model.basic.Personalization
 import io.mimi.sdk.core.controller.processing.config.model.basic.ProcessingParameterConfiguration
 import io.mimi.sdk.core.controller.processing.config.model.basic.SoundPersonalizationFeatureConfiguration
 import io.mimi.sdk.core.controller.processing.config.model.basic.SoundPersonalizationParametersConfiguration
+import io.mimi.sdk.core.internal.processing.datasource.MimiUpDownPresetParameterDataSource
+import io.mimi.sdk.core.model.personalization.MimiUpDownBundleVisualization
+import io.mimi.sdk.processing.ProcessingSession
 import io.mimi.sdk.processing.model.Fitting
+import java.util.Locale
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -75,6 +80,7 @@ class ProcessingCardFragmentViewModel(
                 )
             }
         }
+
     }
 
     private val TAG = this::class.simpleName
@@ -94,10 +100,15 @@ class ProcessingCardFragmentViewModel(
             MimiCore.processingController.activeSession.asFlow()
                 .collect { session ->
                     Log.d(TAG, "Active Session changed: $session")
+                    val isUpDownVisualizationAvailable = session.value.hasUpDownPresetDataSource()
                     _uiState.update {
                         it.copy(
                             hasActiveProcessingSession = session.value != null,
-                            loadingState = session.loadingState
+                            loadingState = session.loadingState,
+                            isUpDownVisualizationAvailable = isUpDownVisualizationAvailable,
+                            // Don't let a result outlive the session which produced it.
+                            upDownVisualizationText =
+                                it.upDownVisualizationText.takeIf { isUpDownVisualizationAvailable }
                         )
                     }
                 }
@@ -242,6 +253,90 @@ class ProcessingCardFragmentViewModel(
 
     // endregion
 
+    // region UpDown Presets Visualization
+
+    /**
+     * The UpDown Presets visualization is an optional extra, and is entirely separate from applying
+     * Processing. It returns the data needed to *draw* Mimi Sound Personalization: the user's own
+     * hearing data, plus the compensation applied by each of the "up" / "default" / "down" presets.
+     *
+     * It is only available when the media preset [io.mimi.sdk.processing.MimiProcessingParameter]
+     * is backed by an UpDown preset DataSource, which is why the UI gates on
+     * [UiState.isUpDownVisualizationAvailable].
+     *
+     * Note: nothing here touches the Processing chain - loading the visualization has no side
+     *       effects on the active session.
+     *
+     * Note: [MimiUpDownPresetParameterDataSource] is currently an *internal* MSDK API, and
+     *       [MimiUpDownBundleVisualization] an *experimental* one, so both need an explicit
+     *       opt-in. The opt-ins are kept on the individual members of this region, rather than on
+     *       the whole ViewModel, so that the rest of this example stays on stable API only.
+     */
+
+    /**
+     * Whether the media preset parameter of the active session is backed by the UpDown DataSource.
+     *
+     * This is deliberately Boolean, so that the internal DataSource type does not leak into the
+     * rest of this ViewModel.
+     */
+    @OptIn(MsdkInternalApi::class)
+    private fun ProcessingSession?.hasUpDownPresetDataSource(): Boolean =
+        upDownPresetDataSource() != null
+
+    /**
+     * The media preset DataSource of the active session, but only when it is the UpDown one.
+     */
+    @OptIn(MsdkInternalApi::class)
+    private fun ProcessingSession?.upDownPresetDataSource(): MimiUpDownPresetParameterDataSource? =
+        this?.soundPersonalization?.media?.presetDataSource as? MimiUpDownPresetParameterDataSource
+
+    @OptIn(MsdkInternalApi::class, MsdkExperimentalApi::class)
+    fun loadUpDownVisualization() {
+        Log.d(TAG, "loadUpDownVisualization()")
+        val dataSource =
+            MimiCore.processingController.activeSession.state.value.upDownPresetDataSource()
+        if (dataSource == null) {
+            Log.w(TAG, "No UpDown preset DataSource in the active session - ignoring")
+            return
+        }
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoadingUpDownVisualization = true) }
+            // loadVisualization() throws, so failures are shown in the UI rather than crashing.
+            val text = runCatching { dataSource.loadVisualization() }
+                .fold(
+                    onSuccess = { it.toDisplayText() },
+                    onFailure = {
+                        Log.e(TAG, "Failed to load the UpDown visualization", it)
+                        "Failed to load visualization: $it"
+                    }
+                )
+            _uiState.update {
+                it.copy(isLoadingUpDownVisualization = false, upDownVisualizationText = text)
+            }
+        }
+    }
+
+    @OptIn(MsdkExperimentalApi::class)
+    private fun MimiUpDownBundleVisualization.toDisplayText(): String =
+        buildString {
+            appendLine("Frequencies (Hz): [250, 500, 1000, 2000, 4000, 8000]")
+            appendLine()
+            appendLine("original (hearing):")
+            appendLine("  left:  ${original.left}")
+            appendLine("  right: ${original.right}")
+            appendLine()
+            appendLine("compensation:")
+            appendLine("  up:      ${compensation.up.toDisplayText()}")
+            appendLine("  default: ${compensation.default.toDisplayText()}")
+            appendLine("  down:    ${compensation.down.toDisplayText()}")
+        }
+
+    @OptIn(MsdkExperimentalApi::class)
+    private fun MimiUpDownBundleVisualization.EarLevels?.toDisplayText(): String =
+        if (this == null) "null" else "left=$left, right=$right"
+
+    // endregion
+
     fun deactivateSession() {
         // Same API for both Basic and Automatic configuration modes.
         Log.d(TAG, "deactivateSession()")
@@ -253,6 +348,11 @@ class ProcessingCardFragmentViewModel(
     data class UiState(
         val hasActiveProcessingSession: Boolean = false,
         val loadingState: LoadingState = LoadingState.Done,
+        // region UpDown Presets Visualization
+        val isUpDownVisualizationAvailable: Boolean = false,
+        val isLoadingUpDownVisualization: Boolean = false,
+        val upDownVisualizationText: String? = null,
+        // endregion
     )
 
 }
