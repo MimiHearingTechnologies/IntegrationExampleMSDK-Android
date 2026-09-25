@@ -41,16 +41,20 @@
             android:layout_marginTop="16dp"
             android:text="Launch TestFlow" />
 
-        <TextView
-            android:id="@+id/testFlowResults"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="240dp"
             android:layout_marginTop="8dp"
-            android:hint="No result yet."
-            android:maxHeight="240dp"
-            android:minLines="5"
-            android:scrollbars="vertical"
-            android:textIsSelectable="true" />
+            android:scrollbars="vertical">
+
+            <TextView
+                android:id="@+id/testFlowResults"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="No result yet."
+                android:textIsSelectable="true" />
+
+        </androidx.core.widget.NestedScrollView>
 
     </LinearLayout>
 
