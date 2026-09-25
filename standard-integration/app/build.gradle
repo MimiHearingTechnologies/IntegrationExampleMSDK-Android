@@ -73,6 +73,8 @@ dependencies {
 
     // Mimi SDK
     implementation "io.mimi:sdk:$rootProject.ext.msdkVer"
+    // Used to deserialize the TestFlowActivity result; same version as the MSDK uses.
+    implementation "com.squareup.moshi:moshi:1.9.3"
     implementation "io.mimi:msdk-debug-mocks:$rootProject.ext.msdkDebugMocksVer"
     constraints {
         implementation('com.mixpanel.android:mixpanel-android:7.5.2') {

@@ -1,10 +1,12 @@
 package io.mimi.example.android.hearingtest
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
 import io.mimi.example.android.R
@@ -13,9 +15,9 @@ import io.mimi.sdk.common.annotations.MsdkInternalApi
 import io.mimi.sdk.core.MimiCore
 import io.mimi.sdk.core.controller.tests.HeadphoneApplicatorConfiguration
 import io.mimi.sdk.core.model.headphones.MimiHeadphoneIdentifier
+import io.mimi.sdk.core.moshi
 import io.mimi.sdk.testflow.activity.TestFlowActivity
-import org.json.JSONArray
-import org.json.JSONObject
+import io.mimi.sdk.testflow.flowfactory.TestFlowResponse
 
 /**
  * Note: You need an authenticated user to launch the [io.mimi.sdk.testflow.activity.TestFlowActivity].
@@ -28,10 +30,7 @@ import org.json.JSONObject
  * returned from it.
  *
  * The result data is a JSON string, whose format matches the [io.mimi.sdk.testflow.flowfactory.TestFlowResponse] class.
- *
- * You could use the [io.mimi.sdk.core.moshi] object to deserialize it.
- *
- * Note: This is uses the deprecated Android technique for launching an Activity for a result.
+ * [TestFlowResultContract] uses the [io.mimi.sdk.core.moshi] object to deserialize it.
  *
  * This Fragment also shows how to inform the MSDK of the currently connected headphone model before
  * launching [io.mimi.sdk.testflow.activity.TestFlowActivity] to improve PTT Hearing Test accuracy.
@@ -55,33 +54,16 @@ class TestFlowLauncherCardFragment : Fragment(R.layout.fragment_test_flow_launch
         }
     }
 
+    private val testFlowLauncher =
+        registerForActivityResult(TestFlowResultContract()) { response ->
+            view?.findViewById<TextView>(R.id.testFlowResults)?.text =
+                response?.let { testFlowResponseAdapter.indent("  ").toJson(it) }
+                    ?: "Invalid or no result"
+        }
+
     @OptIn(MsdkInternalApi::class)
     private fun launchTestFlowForResult() {
-        val intent = TestFlowActivity.Companion.intent(requireActivity())
-        startActivityForResult(intent, 10)
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        val resultJson = data?.getStringExtra(TestFlowActivity.Companion.EXTRA_HEARING_TEST_RESULTS)
-
-        val resultsTextView = view?.findViewById<TextView>(R.id.testFlowResults)
-        resultsTextView?.apply {
-            text = resultJson?.let { prettyPrintJson(it) } ?: "Invalid or no result"
-        }
-    }
-
-    fun prettyPrintJson(json: String, indent: Int = 2): String {
-        return try {
-            when {
-                json.trim().startsWith("{") -> JSONObject(json).toString(indent)
-                json.trim().startsWith("[") -> JSONArray(json).toString(indent)
-                else -> json
-            }
-        } catch (e: Exception) {
-            json // Return original if invalid
-        }
+        testFlowLauncher.launch(TestFlowActivity.intent(requireActivity()))
     }
 
     // endregion
@@ -157,4 +139,21 @@ class TestFlowLauncherCardFragment : Fragment(R.layout.fragment_test_flow_launch
 
     // endregion
 
+}
+
+private val testFlowResponseAdapter = moshi.adapter(TestFlowResponse::class.java)
+
+/**
+ * Launches the [TestFlowActivity] from the supplied [Intent] and parses the result as a [TestFlowResponse].
+ */
+private class TestFlowResultContract : ActivityResultContract<Intent, TestFlowResponse?>() {
+
+    override fun createIntent(context: Context, input: Intent): Intent = input
+
+    override fun parseResult(resultCode: Int, intent: Intent?): TestFlowResponse? =
+        // This deserializes the JSON response provided by the TestFlowActivity into a TestFlowResponse
+        // instance. This example uses the MSDK Moshi instance, which is already configured to parse
+        // the complex JSON structure. Depending on your needs, you could deserialize with different techniques.
+        intent?.getStringExtra(TestFlowActivity.EXTRA_HEARING_TEST_RESULTS)
+            ?.let { testFlowResponseAdapter.fromJson(it) }
 }
